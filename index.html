@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Елизавета — Ведущая мероприятий · Новосибирск</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--lift:6rem;--bg:#120d0a;--choc:#1e1510;--gold:#d9b46f;--gold2:#a8844a;--ink:#f1e6d4;--mut:#b3a28e;--serif:'Playfair Display',Georgia,serif;--sans:'Inter',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font:400 1rem/1.6 var(--sans);color:var(--ink);background:radial-gradient(ellipse 90% 70% at 50% 25%,#2b1e15,#1a120d 50%,#100b08) fixed;overflow-x:hidden}
+body.lock{overflow:hidden}
+/* виньетка + зерно */
+body::after{content:"";position:fixed;inset:0;z-index:200;pointer-events:none;opacity:.07;mix-blend-mode:overlay;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E")}
+a{color:inherit}
+h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.1;color:#fff8ec}
+.gold{background:linear-gradient(180deg,#fff3d6,#e3c58a 45%,#a8844a 80%,#f0dcae);-webkit-background-clip:text;background-clip:text;color:transparent;font-style:italic}
+.eyebrow{font:italic 400 1rem var(--serif);color:var(--gold);margin-bottom:.75rem}
+.btn{display:inline-flex;justify-content:center;padding:.9rem 2rem;border-radius:999px;font:500 .9rem var(--sans);letter-spacing:.03em;text-decoration:none;color:#1a120d;border:0;cursor:pointer;background:linear-gradient(180deg,#ecd29b,#c49a55);box-shadow:0 12px 32px -14px #d9b46fa6;transition:.3s}
+.btn:hover{transform:translateY(-2px)}
+.btn:disabled{opacity:.6;cursor:wait}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+section{position:relative;padding:6rem 1.5rem}
+.wrap{max-width:64rem;margin:auto}
+.center{text-align:center}
+h2{font-size:clamp(2.2rem,6vw,3.75rem)}
+.rv{opacity:0;transform:translateY(24px);transition:opacity .7s,transform .7s}.rv.in{opacity:1;transform:none}
+
+/* ===== интро: кулисы (фото img/curtain-choc.jpg, без файла — CSS-запасной вариант) ===== */
+#loader{position:fixed;inset:0;z-index:400;overflow:hidden;background:transparent}
+#loader .cu{position:absolute;top:0;bottom:0;left:-10%;width:61%;z-index:1;transform-origin:top left;will-change:transform;
+ background:linear-gradient(180deg,#0005,transparent 22%,transparent 78%,#0007),url(img/curtain-choc.jpg) left center/163.9% 100% no-repeat,repeating-linear-gradient(90deg,#150e09 0,#2d1f16 3.5%,#0f0906 7%,#26190f 10.5%,#150e09 14%);box-shadow:inset -20px 0 40px #000b}
+#loader .r{left:auto;right:-10%;transform-origin:top right;
+ background:linear-gradient(180deg,#0005,transparent 22%,transparent 78%,#0007),url(img/curtain-choc.jpg) right center/163.9% 100% no-repeat,repeating-linear-gradient(90deg,#150e09 0,#2d1f16 3.5%,#0f0906 7%,#26190f 10.5%,#150e09 14%);box-shadow:inset 20px 0 40px #000b}
+#loader .stage{position:absolute;inset:0;z-index:2;display:grid;place-items:center;text-align:center;padding:1.5rem;opacity:0;transition:opacity .8s}
+#loader.rd .stage{opacity:1}
+#loader h1{font:italic 400 clamp(2rem,6vw,3.6rem)/1.2 var(--serif);max-width:30rem;text-shadow:0 2px 30px #000}
+#loader.open .l{transform:translateX(-101%)}#loader.open .r{transform:translateX(101%)}
+#loader.open .stage{opacity:0;transition-duration:.5s}
+/* одно слитное движение: верх уходит быстрее, тяжёлый низ запаздывает (skew),
+   затем догоняет с лёгким качанием; ткань собирается в складки (scaleX) */
+#loader.open .l{animation:openL 2.3s linear both}
+#loader.open .r{animation:openR 2.3s linear .15s both}
+@keyframes openL{
+ 0%{transform:translateX(0%) scaleX(1.000) skewX(0deg)}
+ 10%{transform:translateX(0%) scaleX(0.983) skewX(2deg)}
+ 20%{transform:translateX(0%) scaleX(0.932) skewX(6deg)}
+ 30%{transform:translateX(-0.1%) scaleX(0.830) skewX(9deg)}
+ 40%{transform:translateX(-1.2%) scaleX(0.694) skewX(8.5deg)}
+ 50%{transform:translateX(-5.1%) scaleX(0.558) skewX(5.5deg)}
+ 60%{transform:translateX(-13.3%) scaleX(0.439) skewX(2deg)}
+ 70%{transform:translateX(-25.9%) scaleX(0.337) skewX(-1.5deg)}
+ 80%{transform:translateX(-42.0%) scaleX(0.252) skewX(-2deg)}
+ 90%{transform:translateX(-57.0%) scaleX(0.193) skewX(-0.8deg)}
+ 100%{transform:translateX(-70%) scaleX(0.150) skewX(0deg)}}
+@keyframes openR{
+ 0%{transform:translateX(0%) scaleX(1.000) skewX(0deg)}
+ 10%{transform:translateX(0%) scaleX(0.983) skewX(-2deg)}
+ 20%{transform:translateX(0%) scaleX(0.932) skewX(-6deg)}
+ 30%{transform:translateX(0.1%) scaleX(0.830) skewX(-9deg)}
+ 40%{transform:translateX(1.2%) scaleX(0.694) skewX(-8.5deg)}
+ 50%{transform:translateX(5.1%) scaleX(0.558) skewX(-5.5deg)}
+ 60%{transform:translateX(13.3%) scaleX(0.439) skewX(-2deg)}
+ 70%{transform:translateX(25.9%) scaleX(0.337) skewX(1.5deg)}
+ 80%{transform:translateX(42.0%) scaleX(0.252) skewX(2deg)}
+ 90%{transform:translateX(57.0%) scaleX(0.193) skewX(0.8deg)}
+ 100%{transform:translateX(70%) scaleX(0.150) skewX(0deg)}}
+#loader.gone{opacity:0;transition:opacity .4s}
+
+/* ===== главный экран ===== */
+#hero{min-height:100svh;padding:2.5rem 1.5rem 7.5rem;overflow:hidden;display:flex;align-items:stretch}
+#hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 48% 75% at 50% 40%,#ffd69657,#ffd6961c 45%,transparent 72%)}
+.beam{position:absolute;top:0;left:50%;width:50%;height:100%;transform:translateX(-50%);clip-path:polygon(42% 0,58% 0,100% 100%,0 100%);background:linear-gradient(180deg,#ffe0aa38,transparent 85%);pointer-events:none}
+.big{position:absolute;left:50%;top:9%;transform:translateX(-50%);font:700 clamp(2.6rem,8vw,7rem)/1 var(--serif);color:#f6e3b8;opacity:.6;letter-spacing:.12em;text-shadow:0 0 30px #d9b46f66;white-space:nowrap;pointer-events:none;user-select:none}
+.hgrid{position:relative;z-index:2;width:100%;max-width:90rem;margin:auto;display:grid;gap:1.5rem;align-items:stretch;grid-template-columns:1fr;grid-template-areas:"l" "c" "r"}
+@media(min-width:900px){.hgrid{grid-template-columns:1fr minmax(18rem,32vw) 1fr;grid-template-areas:"l c r";min-height:calc(100svh - 10rem)}}
+.col{display:flex;flex-direction:column;gap:1.5rem}
+.col.l{grid-area:l;justify-content:space-between}.col.r{grid-area:r;justify-content:space-between}
+.tilt{width:min(78%,20rem);border-radius:.4rem;overflow:hidden;border:1px solid #d9b46f55;box-shadow:0 30px 60px -20px #000,0 0 0 6px #ffffff0a;background:#000}
+.tilt img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover}
+.col.l .tilt{transform:rotate(-5deg);align-self:flex-start}
+.col.r .tilt{transform:rotate(4deg);align-self:flex-end}
+.col.l .tx{text-align:left}.col.r .tx{text-align:right}
+.tx h1{font-size:clamp(2.6rem,5.2vw,4.6rem);line-height:1.05}
+.tx .sub{margin-top:.9rem;font:italic 400 1.15rem var(--serif);color:var(--gold)}
+.tx .nm{font:italic 500 clamp(3rem,6vw,5rem)/1 var(--serif)}
+.tx p.c{margin-top:1rem;font:600 clamp(1.25rem,2vw,1.8rem)/1.35 var(--serif);color:#fff;text-shadow:0 2px 18px #000,0 0 26px #d9b46f66}
+.tx p.c b{display:block;margin-bottom:.35rem;font:italic 700 clamp(1.5rem,2.6vw,2.3rem)/1.2 var(--serif);color:#ffd98f}
+.center-st{grid-area:c;position:relative;display:flex;align-items:flex-end;justify-content:center;min-height:30rem}
+.center-st::before,.center-st::after{content: ""; position: absolute; top: -2.5rem; bottom: 2rem; width: 45%; pointer-events: none;
+  background: radial-gradient(circle, #f6e3b8 0 1px, transparent 1.6px) 0 0/8px 9px;
+  /* Делаем супер-плавное растворение к центру, чтобы не было рубленых краев */
+  -webkit-mask-image: linear-gradient(var(--d), #000 0%, transparent 100%);
+  mask-image: linear-gradient(var(--d), #000 0%, transparent 100%);}
+.center-st::before{left:-6%;--d:to right}.center-st::after{right:-6%;--d:to left}
+.center-st.hs::before,.center-st.hs::after{width:90%;background:url(img/crystal-strands.jpg) center/cover;mix-blend-mode:screen;opacity:.9;
+ -webkit-mask-image:linear-gradient(to right,transparent 0,#000 18%,#000 38%,transparent 100%),linear-gradient(#000 82%,transparent);
+ mask-image:linear-gradient(to right,transparent 0,#000 18%,#000 38%,transparent 100%),linear-gradient(#000 82%,transparent);
+ -webkit-mask-composite:source-in;mask-composite:intersect}
+.center-st.hs::after{transform:scaleX(-1)}
+.floor{position:absolute;bottom:calc(var(--lift) - 1.5rem);left:50%;width:85%;height:2.5rem;transform:translateX(-50%);border-radius:50%;background:radial-gradient(ellipse,#ffd69680,transparent 70%)}
+#host{position:relative;z-index:1;display:block;width:100%;height:70vh;max-height:48rem;margin-bottom:var(--lift);object-fit:contain;object-position:bottom center;filter:saturate(.8) sepia(.2) drop-shadow(0 20px 40px #000a)}
+#host.cut{filter:drop-shadow(0 20px 40px #000a);}
+@media(max-width:899px){
+ #hero{padding-bottom:11rem}                 /* место под многострочный dock */
+ :root{--lift:2.5rem}
+ .center-st{min-height:0}
+ .col.l .tx{order:-1}                        /* сначала цепляющий текст */
+ .col.l .tilt{display:none}                  /* декор-фото микрофона на мобильных не мешает порядку «текст → ведущая» */
+ .col.l,.col.r{gap:1rem}
+ .col.l .tx,.col.r .tx{text-align:center}
+ .col.l{justify-content:flex-start}
+}
+/* появление после кулис */
+.hgrid>*{opacity:0;transform:translateY(20px);transition:opacity 1s .1s,transform 1s .1s}
+body.go .hgrid>*{opacity:1;transform:none}
+body.go .hgrid>.col.l{transition-delay:.35s}body.go .hgrid>.col.r{transition-delay:.55s}
+
+/* панель навигации */
+.dock{position:absolute;z-index:5;left:50%;bottom:1.5rem;transform:translateX(-50%);width:calc(100% - 2rem);max-width:60rem;display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;padding:.7rem;border-radius:1.6rem;background:#160f0acc;border:1px solid #d9b46f40;backdrop-filter:blur(10px);box-shadow:0 20px 50px -20px #000}
+.dock .sep{width:1px;background:#d9b46f55;margin:.2rem .3rem}
+.dock a,.dock button{font:400 .9rem var(--sans);color:var(--ink);text-decoration:none;padding:.6rem 1.15rem;border-radius:999px;border:1px solid #ffffff24;background:none;cursor:pointer;transition:.3s}
+.dock a:hover{border-color:var(--gold);background:#d9b46f1a}
+.dock button{border-color:#d9b46f80;color:var(--gold)}
+.dock button:hover{background:var(--gold);color:#1a120d}
+@media(max-width:600px){.dock .sep{display:none}.dock a,.dock button{flex:1 1 40%;text-align:center}}
+
+/* ===== праздники (скролл-портфолио) ===== */
+@property --g1{syntax:'<color>';inherits:true;initial-value:rgba(255,236,190,.5)}
+@property --g2{syntax:'<color>';inherits:true;initial-value:rgba(217,180,111,.3)}
+@property --ring{syntax:'<color>';inherits:true;initial-value:#d9b46f}
+#portfolio{background:#0f0a07;padding:0;--g1:rgba(255,236,190,.5);--g2:rgba(217,180,111,.3);--ring:#d9b46f;transition:--g1 1.4s ease,--g2 1.4s ease,--ring 1.4s ease}
+/* цветное свечение сцены — цвета меняются из JS при смене праздника */
+#portfolio .sticky::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;mix-blend-mode:screen;
+ background:radial-gradient(ellipse 62% 58% at 72% 46%,var(--g1),transparent 70%),radial-gradient(ellipse 55% 50% at 22% 82%,var(--g2),transparent 72%),radial-gradient(ellipse 40% 35% at 50% 0,var(--g2),transparent 75%);
+ animation:glowPulse 6s ease-in-out infinite alternate}
+@keyframes glowPulse{from{opacity:.78;transform:scale(1)}to{opacity:1;transform:scale(1.06)}}
+.fx{position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none}
+.fp{position:absolute;bottom:-70px;line-height:1;will-change:transform,opacity;filter:drop-shadow(0 0 12px var(--g1));animation:fp var(--t,9s) linear forwards}
+@keyframes fp{0%{transform:translate3d(0,0,0) rotate(0) scale(.6);opacity:0}12%{opacity:var(--o,.6)}80%{opacity:var(--o,.6)}100%{transform:translate3d(var(--dx,0),-115vh,0) rotate(var(--rot,0)) scale(1);opacity:0}}
+#portfolio .sticky{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;flex-direction:column}
+@media(min-width:768px){#portfolio .sticky{flex-direction:row}}
+#pbar{position:absolute;top:0;left:0;height:2px;width:0;background:linear-gradient(90deg,var(--gold2),#f6e3b8);z-index:5}
+.hint{position:absolute;top:1.5rem;left:50%;transform:translateX(-50%);font:italic .9rem var(--serif);color:var(--mut);z-index:5}
+.pic{order:1;height:40%;display:flex;align-items:center;justify-content:center;perspective:1300px;position:relative;z-index:2}
+.txt{order:2;position:relative;z-index:2;height:60%;overflow:hidden}
+@media(min-width:768px){.pic{order:2;width:50%;height:100%}.txt{order:1;width:50%;height:100%}}
+.circle{position:relative;width:14rem;height:14rem;border-radius:50%;overflow:hidden;border:2px solid var(--ring);box-shadow:0 0 70px -8px var(--g1),0 0 140px -30px var(--g2),0 30px 80px -30px #000;cursor:pointer;will-change:transform,filter}
+@media(min-width:768px){.circle{width:20rem;height:20rem}}
+.circle img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0}
+.circle img.on{opacity:1}
+.hc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 1.5rem;text-align:center;opacity:0}
+.hc h3{font-size:clamp(2.2rem,5vw,3.75rem)}
+.hc .sl{margin-top:1rem;font:italic 500 clamp(1.1rem,2vw,1.5rem) var(--serif)}
+.hc ul{list-style:none;margin-top:1.75rem;max-width:24rem;color:#e0d2bd;font-size:.95rem}
+.hc li{margin:.6rem 0}.hc li::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold);margin-right:.75rem;vertical-align:middle}
+.cnt{position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);display:flex;gap:1rem;align-items:center;font-size:.85rem;color:var(--mut);z-index:5;white-space:nowrap}
+.cnt a{font-size:.75rem}.cnt a:hover{color:#fff}
+.balloon{position:fixed;bottom:-220px;width:clamp(56px,9vw,84px);aspect-ratio:1/1.3;border-radius:50%/45% 45% 55% 55%;z-index:60;pointer-events:none;box-shadow:inset -4px -6px 10px #0004;animation:fb 2.8s ease-out forwards}
+.balloon::after{content:"";position:absolute;top:100%;left:50%;width:2px;height:120px;background:#ffffff4d}
+.balloon.ph{border-radius:0;box-shadow:none;background-size:contain;background-repeat:no-repeat;background-position:center;width:clamp(90px,14vw,150px);aspect-ratio:1/1.6}.balloon.ph::after{display:none}
+@keyframes fb{0%{transform:translateY(0) scale(.5);opacity:0}12%{opacity:1}100%{transform:translateY(-115vh) scale(1.15);opacity:0}}
+
+/* ===== отзывы ===== */
+#reviews{overflow:hidden}
+#reviews::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 55% 45% at 50% 30%,#ffd69624,transparent 70%);pointer-events:none}
+.rvw{position:relative;max-width:48rem;margin:3.5rem auto 0;min-height:20rem;display:flex;align-items:center}
+.rvw .body{width:100%;padding:0 4rem;text-align:center;transition:opacity .4s,transform .4s}
+.rvw .body.out{opacity:0;transform:translateX(-40px)}
+.stars{color:var(--gold);font-size:1.2rem;letter-spacing:.2em}
+.rvw p.t{margin-top:1.5rem;font:italic 400 clamp(1.2rem,2.5vw,1.5rem)/1.6 var(--serif)}
+.rvw p.n{margin-top:1.5rem;font-size:.9rem;color:var(--mut)}.rvw p.n b{color:#fff;font-weight:500}.rvw p.n span{color:var(--gold);margin:0 .5rem}
+.ar{position:absolute;top:50%;margin-top:-1.5rem;width:3rem;height:3rem;border-radius:50%;border:1px solid #fff3;background:none;color:#fff;font-size:1.4rem;cursor:pointer;transition:.3s}
+.ar:hover{background:#ffffff1a;border-color:var(--gold)}
+.ar.p{left:0}.ar.n{right:0}
+@media(min-width:900px){.ar.p{left:-4rem}.ar.n{right:-4rem}}
+.dots{display:flex;gap:.5rem;justify-content:center;margin-top:2.5rem}
+.dots i{height:6px;width:8px;border-radius:6px;background:#ffffff40;transition:.3s;cursor:pointer}.dots i.on{width:32px;background:var(--gold)}
+
+/* ===== форма ===== */
+.frame{max-width:48rem;margin:2.5rem auto 0;border-radius:2rem;border:1px solid #d9b46f33;background:#160f0acc;box-shadow:0 25px 50px -12px #000}
+form{padding:1.75rem;display:grid;gap:1.25rem}
+@media(min-width:768px){form{padding:3rem 4rem}}
+.f2{display:grid;gap:1.25rem}@media(min-width:640px){.f2{grid-template-columns:1fr 1fr}}
+label{font-size:.9rem;color:var(--mut);display:block}label small{color:#8a7a68}
+input,select,textarea{display:block;width:100%;margin-top:.5rem;padding:.75rem 1rem;border-radius:.75rem;background:#ffffff0d;border:1px solid #ffffff26;color:var(--ink);font:inherit;outline:none;transition:.3s}
+input::placeholder,textarea::placeholder{color:#8a7a68}
+input:focus,select:focus,textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px #d9b46f30}
+input[type=date]{color-scheme:dark}select option{background:#1e1510}textarea{resize:none}
+#st{text-align:center;font-size:.9rem;min-height:1.4em}
+.ct{margin-top:3rem;text-align:center}.ct .tel{font-size:1.1rem;text-decoration:none;font-weight:500}.ct h3{margin-bottom:1rem;font-size:1.5rem}
+.soc{display:flex;gap:1rem;justify-content:center;margin-top:1.5rem}
+.soc a{width:2.75rem;height:2.75rem;border-radius:50%;border:1px solid #fff3;display:grid;place-items:center;text-decoration:none;font-size:.85rem;transition:.3s}
+.soc a:hover{border-color:var(--gold);background:#ffffff10}
+footer{padding:3rem 1.5rem;border-top:1px solid #ffffff1a}
+footer .wrap{display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;align-items:center}
+footer p{color:var(--mut);font-size:.9rem}footer small{color:#8a7a68}
+
+/* ===== модальные окна ===== */
+.modal{position:fixed;inset:0;z-index:300;display:grid;place-items:center;padding:1rem;background:#0a0705e8;backdrop-filter:blur(8px);opacity:0;transition:opacity .3s}
+.modal[hidden]{display:none}.modal.show{opacity:1}
+.panel{position:relative;width:100%;max-width:40rem;max-height:88vh;overflow:auto;padding:3.5rem 2rem 2.25rem;border-radius:1.5rem;border:1px solid #d9b46f55;background:radial-gradient(ellipse 80% 40% at 50% 0,#d9b46f1f,transparent),var(--choc);box-shadow:0 40px 90px -30px #000;transform:translateY(18px) scale(.98);transition:transform .35s}
+.modal.show .panel{transform:none}
+@media(min-width:640px){.panel{padding:3.5rem 3rem 2.5rem}}
+.x{position:absolute;top:1rem;right:1rem;padding:.5rem 1rem;border-radius:999px;border:1px solid #d9b46f80;background:none;color:var(--gold);font:400 .85rem var(--sans);cursor:pointer;transition:.3s}
+.x:hover{background:var(--gold);color:#1a120d}
+.panel h2{font-size:clamp(2rem,5vw,2.8rem)}
+.panel p+p{margin-top:1rem}.panel p{color:#e0d2bd}.panel a.tg{color:var(--gold);font-weight:500}.panel .btn{margin-top:1.75rem;color:#1a120d}
+.panel .lead{margin-top:1rem;color:#e0d2bd;font-size:1.05rem}
+.panel ul{list-style:none;margin:1.5rem 0 2rem;display:grid;gap:.75rem}
+.panel li{padding:1rem 1.25rem;border-radius:.9rem;border:1px solid #ffffff1a;background:#ffffff08}
+.panel li b{display:block;font:italic 500 1.2rem var(--serif);color:var(--gold);margin-bottom:.2rem}
+.panel li span{font-size:.92rem;color:var(--mut)}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv,.hgrid>*{opacity:1;transform:none}}
+</style>
+</head>
+<body class="lock">
+
+<!-- интро: театральные кулисы -->
+<div id="loader">
+  <div class="stage"><h1>Ваш праздник начинается</h1></div>
+  <div class="cu l"></div><div class="cu r"></div>
+</div>
+
+<main>
+<!-- ГЛАВНЫЙ ЭКРАН -->
+<section id="hero">
+  <div class="beam"></div>
+  <div class="hgrid">
+    <div class="col l">
+      <div class="tilt"><img src="img/mic.jpg" alt="Микрофон на сцене"></div>
+      <div class="tx">
+        <h1>Смех. Тепло. <span class="gold">Вау.</span></h1>
+        <p class="sub">Вечер в главной роли</p>
+      </div>
+    </div>
+
+    <div class="center-st">
+      <div class="floor"></div>
+      <img id="host" src="img/portrait.jpg" alt="Елизавета — ведущая мероприятий">
+      <div class="big" aria-hidden="true">ВЕДУЩАЯ</div>
+    </div>
+
+    <div class="col r">
+      <div class="tx"><p class="nm gold">Елизавета</p></div>
+      <div class="tx">
+        <p class="c"><b>Новосибирск + Ваш город.</b><br>Приеду в ваш город.</p>
+      </div>
+      <div class="tilt"><img src="img/guests.jpg" alt="Гости на празднике" onerror="this.onerror=null;this.src='img/birthday.jpg'"></div>
+    </div>
+  </div>
+
+  <nav class="dock" aria-label="Навигация">
+    <a href="#portfolio">Праздники</a>
+    <a href="#reviews">Отзывы</a>
+    <a href="#contact">Связь со мной</a>
+    <span class="sep"></span>
+    <button type="button" data-modal="m-smm">SMM / Маркетинг</button>
+    <button type="button" data-modal="m-pets">Помощь животным</button>
+  </nav>
+</section>
+
+<!-- ПРАЗДНИКИ -->
+<section id="portfolio">
+  <div class="sticky">
+    <div id="pbar"></div><div class="fx" id="fx" aria-hidden="true"></div><div class="hint">прокрутите вниз</div>
+    <div class="pic"><div class="circle" id="circle" title="Нажмите!"></div></div>
+    <div class="txt" id="txt"><div class="cnt"><span id="num">01 / 04</span><a href="#reviews">к отзывам ↓</a></div></div>
+  </div>
+</section>
+
+<!-- ОТЗЫВЫ -->
+<section id="reviews">
+  <div class="wrap" style="position:relative">
+    <div class="center rv"><h2>Меня <span class="gold">выбирают</span></h2></div>
+    <div class="rvw">
+      <button class="ar p" aria-label="Предыдущий отзыв" id="rp">‹</button>
+      <div class="body" id="rb"></div>
+      <button class="ar n" aria-label="Следующий отзыв" id="rn">›</button>
+    </div>
+    <div class="dots" id="dots"></div>
+  </div>
+</section>
+
+<!-- СВЯЗЬ -->
+<section id="contact" style="overflow:hidden">
+  <div class="wrap" style="max-width:48rem">
+    <div class="center rv">
+      <h2>Связь с лучшим <span class="gold">праздником</span></h2>
+      <p style="margin-top:1.25rem;color:#e0d2bd;font-size:1.1rem">Оставьте свой отклик, и моя команда обязательно с вами свяжется.</p>
+    </div>
+    <div class="frame rv">
+      <form id="form">
+        <label>Имя *<input name="name" required placeholder="Как к вам обращаться"></label>
+        <div class="f2">
+          <label>Дата<input type="date" name="date"></label>
+          <label>Праздник *<select name="type" required><option value="" disabled selected>Выберите формат</option></select></label>
+        </div>
+        <label>Telegram <small>(необязательно)</small><input name="telegram" placeholder="@username или номер"></label>
+        <label>Комментарий <small>(необязательно)</small><textarea name="comment" rows="3" placeholder="Расскажите о вашем празднике"></textarea></label>
+        <button class="btn" type="submit" id="send">Отправить</button>
+        <p id="st" role="status"></p>
+      </form>
+    </div>
+    <div class="ct">
+      <h3>Свяжусь</h3>
+      <a class="tel gold" href="tel:+70000000000" style="font-style:normal">+7 (000) 000-00-00</a>
+      <div class="soc">
+        <a href="https://vk.com/LissKerrlon" target="_blank" rel="noreferrer" aria-label="VK">VK</a>
+        <a href="https://t.me/elizaveta_host" target="_blank" rel="noreferrer" aria-label="Telegram">TG</a>
+        <a href="https://instagram.com/elizaveta_host" target="_blank" rel="noreferrer" aria-label="Instagram">IG</a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap">
+  <div><h3 style="font-size:1.25rem">Елизавета</h3><p>Ведущая мероприятий · Новосибирск · выезд в любой город</p></div>
+  <small>© <span id="yr"></span> · сделано с любовью к празднику</small>
+</div></footer>
+
+<!-- МОДАЛЬНЫЕ ОКНА (тексты — заглушки, замените на свои) -->
+<div class="modal" id="m-smm" role="dialog" aria-modal="true" aria-labelledby="t-smm" hidden>
+  <div class="panel">
+    <button class="x" type="button">✕ Закрыть</button>
+    <h2 id="t-smm">SMM / <span class="gold">Маркетинг</span></h2>
+    <p class="lead"><!-- TODO: свой текст -->Помогаю проектам и командам рассказывать о себе в соцсетях. Здесь будет описание направления.</p>
+    <ul>
+      <li><b>Ведение соцсетей</b><span>Контент-план, посты, сторис</span></li>
+      <li><b>Продвижение</b><span>Стратегия и работа с аудиторией</span></li>
+      <li><b>Контент для мероприятий</b><span>Анонсы, фото- и видеоотчёты</span></li>
+    </ul>
+    <a class="btn" href="#contact" data-close>Обсудить проект</a>
+  </div>
+</div>
+
+<div class="modal" id="m-pets" role="dialog" aria-modal="true" aria-labelledby="t-pets" hidden>
+  <div class="panel">
+    <button class="x" type="button">✕ Закрыть</button>
+    <h2 id="t-pets" style="font-size:clamp(1.7rem,4.5vw,2.4rem)">Добрые дела: <span class="gold">История Буси</span> 🐾</h2>
+    <p class="lead">Я верю, что тепло нужно дарить не только на праздниках, но и в реальной жизни. Я активно помогаю приютам и животным, попавшим в беду, и хочу поделиться одной историей.</p>
+    <p>Недавно к зданию на Красной Сибири, 101 прибежала собака по имени Буся с тяжело перебитой лапой. Мы экстренно отвезли её в новосибирскую клинику «Вега». Благодаря поддержке неравнодушных людей, всего за одни сутки нам удалось собрать 40 500 рублей на сложную операцию и стационар.</p>
+    <p><b style="color:#fff">Результат:</b> лапу удалось спасти! Сейчас Буся живет в любящей семье, а мы продолжаем навещать её и контролировать условия содержания.</p>
+    <p>Эта история — главное доказательство того, что вместе мы можем совершать настоящие чудеса. Если вы тоже не можете пройти мимо чужой беды и хотите помогать животным, присоединяйтесь к нашим сборам.</p>
+    <p>Все прозрачные отчёты, чеки по операциям и актуальные реквизиты для помощи приютам я закрепляю в своём Telegram: <a class="tg" href="https://t.me/LissKerrlon" target="_blank" rel="noreferrer">@LissKerrlon</a></p>
+    <a class="btn" href="https://t.me/LissKerrlon" target="_blank" rel="noreferrer">Открыть Telegram</a>
+  </div>
+</div>
+
+<script>
+// ===== настройки =====
+const TG_TOKEN='8999754901:AAFl2q8yGWzu3Fo69a8bZUeSFKgi310Aleo', TG_CHAT='1818122500';
+const TH={
+ wedding:  {g1:'rgba(255,240,205,.58)',g2:'rgba(230,190,120,.38)',ring:'#fff0cf',fx:['💍','💍','🤍','✨','🕊️']},
+ kids:     {g1:'rgba(255,130,190,.5)', g2:'rgba(80,200,255,.36)', ring:'#ffb3dc',fx:['🎉','⭐','🧸','🍭','🎉']},
+ birthday: {g1:'rgba(255,175,125,.56)',g2:'rgba(255,120,150,.34)',ring:'#ffc9a1',fx:['🎈','🎈','🎂','🎁','✨']},
+ corporate:{g1:'rgba(200,70,255,.55)', g2:'rgba(40,200,255,.38)', ring:'#d68cff',fx:['🪩','🪩','✨','🎤','🥂']}};
+const HOLIDAYS=[
+ {t:'Свадьба',s:'Ваш день — как кино, где главные роли у вас',p:['Авторский сценарий под вашу пару','Тёплые поздравления и интерактивы','Координация тайминга с подрядчиками'],img:'p-wedding.jpg',fb:'wedding.jpg',th:TH.wedding},
+ {t:'Детский праздник',s:'Море смеха, игр и настоящего чуда для малышей',p:['Интерактивы и игры для каждого возраста','Любимые герои и сюрпризы','Безопасный и весёлый тайминг'],img:'p-kids.jpg',fb:'outfit1.png',th:TH.kids},
+ {t:'День рождения',s:'Именинник в центре, гости — в восторге',p:['Сценарий под характер именинника','Сюрпризы и тёплые слова для героя','Помощь с таймингом и подрядчиками'],img:'p-birthday.jpg',fb:'outfit2.png',th:TH.birthday},
+ {t:'Корпоратив / LIVE-вечер',s:'Сцена, свет и голос, что заполняет зал',p:['Живой вокал — от ретро до хитов','Согласование технического райдера','Два отделения по 40 минут'],img:'p-corporate.jpg',fb:'outfit3.png',th:TH.corporate}];
+const REVIEWS=[
+ ['Елизавета сделала нашу свадьбу незабываемой. Гости до сих пор вспоминают её конкурсы и тёплые слова. Чувствовалось, что каждый момент продуман лично для нас.','Алина В.','Новосибирск'],
+ ['Заказывали ведущую на юбилей мамы. Лиза попала в настроение с первой минуты: и душевно, и весело, без пошлых шуток. Мама была в восторге.','Дмитрий К.','Барнаул'],
+ ['Корпоратив на 120 человек прошёл на ура. Тайминг держала идеально, зал был в огне. Отдельное спасибо за помощь с подрядчиками.','Ольга С.','Томск'],
+ ['Живой вокал на нашем вечере — это просто волшебство. Атмосфера кабаре, тёплый свет, гости не хотели расходиться. Очень рекомендую.','Марина и Игорь','Новосибирск'],
+ ['Выезжали в другой город — всё чётко, без накладок. Сценарий под нашу компанию, индивидуальный подход. Результат превзошёл ожидания.','Сергей П.','Омск']];
+const TYPES=['Свадьба','День рождения','Корпоратив','Юбилей','Выпускной','LIVE-вечер','Концерт / выступление','Другое'];
+const $=id=>document.getElementById(id);
+
+// ===== ведущая: если есть вырезанный PNG (img/host.png) — берём его =====
+const host=$('host');
+const cut=new Image();cut.onload=()=>{host.src=cut.src;host.classList.add('cut')};cut.src='img/host.png';
+const sI=new Image();sI.onload=()=>document.querySelector('.center-st').classList.add('hs');sI.src='img/crystal-strands.jpg';
+const hostReady=new Promise(r=>{if(host.complete)r();else host.onload=host.onerror=r});
+const curtainReady=new Promise(r=>{const i=new Image();i.onload=i.onerror=r;i.src='img/curtain-choc.jpg'});
+
+// ===== интро: кулисы раздвигаются =====
+Promise.race([Promise.all([hostReady,curtainReady]),new Promise(r=>setTimeout(r,4000))]).then(()=>{
+ const L=$('loader');L.classList.add('rd');
+ setTimeout(()=>L.classList.add('open'),800);
+ setTimeout(()=>document.body.classList.add('go'),2300); // героиня проявляется во время второго рывка
+ setTimeout(()=>{L.classList.add('gone');document.body.classList.remove('lock');setTimeout(()=>L.remove(),450)},3600);
+});
+
+// ===== reveal =====
+const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&(e.target.classList.add('in'),io.unobserve(e.target))),{threshold:.2});
+document.querySelectorAll('.rv').forEach(e=>io.observe(e));
+
+// ===== праздники (скролл) =====
+const sec=$('portfolio'),txt=$('txt'),circle=$('circle');
+sec.style.height=(HOLIDAYS.length+1)*100+'vh';
+HOLIDAYS.forEach((h,i)=>{
+ const im=new Image();im.onerror=()=>{if(h.fb&&!im.dataset.f){im.dataset.f=1;im.src='img/'+h.fb}};im.src='img/'+h.img;im.alt=h.t;circle.appendChild(im);
+ const d=document.createElement('div');d.className='hc';
+ d.innerHTML=`<p class="eyebrow">формат</p><h3>${h.t}</h3><p class="sl gold">${h.s}</p><ul>${h.p.map(x=>`<li>${x}</li>`).join('')}</ul>`;
+ txt.appendChild(d)});
+const cards=[...txt.querySelectorAll('.hc')],imgs=[...circle.querySelectorAll('img')],n=HOLIDAYS.length;
+const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+// ===== тема праздника: свечение + всплывающие эмодзи =====
+const fx=$('fx'),calm=matchMedia('(prefers-reduced-motion:reduce)').matches;
+let theme=-1,secVisible=false,FX_MAX=26;
+function spawn(set,burst){
+ if(calm||fx.childElementCount>=FX_MAX)return;
+ const p=document.createElement('span'),sz=18+Math.random()*28;
+ p.className='fp';p.textContent=set[Math.floor(Math.random()*set.length)];
+ p.style.cssText=`left:${(Math.random()*96).toFixed(1)}%;font-size:${sz.toFixed(0)}px;--t:${(8+Math.random()*6).toFixed(1)}s;--dx:${((Math.random()-.5)*160).toFixed(0)}px;--rot:${((Math.random()-.5)*50).toFixed(0)}deg;--o:${(.3+Math.random()*.35).toFixed(2)};${burst?`animation-delay:${(Math.random()*.9).toFixed(2)}s`:''}`;
+ p.addEventListener('animationend',()=>p.remove());fx.appendChild(p)}
+function applyTheme(i){
+ const t=HOLIDAYS[i].th;if(!t)return;
+ sec.style.setProperty('--g1',t.g1);sec.style.setProperty('--g2',t.g2);sec.style.setProperty('--ring',t.ring);
+ if(secVisible)for(let k=0;k<9;k++)spawn(t.fx,true)}  // «залп» при смене праздника
+setInterval(()=>{if(secVisible&&!document.hidden&&theme>=0)spawn(HOLIDAYS[theme].th.fx)},520);
+new IntersectionObserver(es=>{secVisible=es[0].isIntersecting},{threshold:0}).observe(sec);
+function upd(){
+ const r=sec.getBoundingClientRect(),pr=clamp(-r.top/(r.height-innerHeight),0,1),u=pr*n;
+ $('pbar').style.width=pr*100+'%';let th=0;for(let m=1;m<n;m++){const t=clamp((u-m+.3)/.6,0,1);th+=180*t*t*(3-2*t)}
+ const kk=Math.floor((th+90)/180),loc=th-180*kk;
+ circle.style.transform=`rotateY(${loc}deg)`;circle.style.filter=`brightness(${1-Math.abs(loc)/140})`;
+ const a=Math.min(n-1,kk);if(a!==theme){theme=a;applyTheme(a)}
+ $('num').textContent=`0${a+1} / 0${n}`;
+ imgs.forEach((im,i)=>im.classList.toggle('on',i===a));
+ cards.forEach((c,i)=>{let o=1,x=0,s=1;
+  if(u<i)  {const f=clamp((u-i+.3)/.3,0,1);o=f;x=50*(1-f);s=.92+.08*f}
+  else if(u>i+1){const g=clamp((u-i-1)/.3,0,1);o=1-g;x=-50*g;s=1-.08*g}
+  c.style.opacity=o;c.style.transform=`translateX(${x}vw) scale(${s})`})}
+addEventListener('scroll',upd,{passive:true});addEventListener('resize',upd);upd();
+// шарики по клику на фото (серебряный — фото, остальные — тёплые цвета)
+const hasBl=new Promise(r=>{const i=new Image();i.onload=()=>r(1);i.onerror=()=>r(0);i.src='img/balloon-2.png'});
+circle.addEventListener('click',async e=>{
+ const ph=await hasBl,col=['#d9b46f','#f1e6d4','#a8844a','#c9c2b8','#8a6a3c'];
+ for(let i=0;i<10;i++){const b=document.createElement('div');b.className='balloon';
+  b.style.left=(e.clientX+(Math.random()-.5)*Math.min(innerWidth*.7,420))+'px';
+  if(ph&&i%2){b.classList.add('ph');b.style.backgroundImage='url(img/balloon-2.png)'}else b.style.background=col[i%5];
+  b.style.animationDelay=Math.random()*.4+'s';document.body.appendChild(b);setTimeout(()=>b.remove(),3400)}});
+
+// ===== отзывы =====
+let ri=0;const rb=$('rb');
+$('dots').innerHTML=REVIEWS.map((_,i)=>`<i data-i="${i}" aria-label="Отзыв ${i+1}"></i>`).join('');
+function show(i,first){ri=(i+REVIEWS.length)%REVIEWS.length;
+ const draw=()=>{const r=REVIEWS[ri];
+  rb.innerHTML=`<div class="stars">★★★★★</div><p class="t">«${r[0]}»</p><p class="n"><b>${r[1]}</b><span>·</span>${r[2]}</p>`;
+  rb.classList.remove('out');[...$('dots').children].forEach((d,k)=>d.classList.toggle('on',k===ri))};
+ if(first)draw();else{rb.classList.add('out');setTimeout(draw,350)}}
+$('rp').onclick=()=>show(ri-1);$('rn').onclick=()=>show(ri+1);
+$('dots').onclick=e=>e.target.dataset.i&&show(+e.target.dataset.i);show(0,true);
+
+// ===== модальные окна =====
+let lastBtn=null;
+function openM(id,btn){const m=$(id);lastBtn=btn;m.hidden=false;document.body.classList.add('lock');
+ requestAnimationFrame(()=>{m.classList.add('show');m.querySelector('.x').focus()})}
+function closeM(m,silent){m.classList.remove('show');document.body.classList.remove('lock');
+ setTimeout(()=>{m.hidden=true},300);if(!silent&&lastBtn)lastBtn.focus()}
+document.querySelectorAll('[data-modal]').forEach(b=>b.onclick=()=>openM(b.dataset.modal,b));
+document.querySelectorAll('.modal').forEach(m=>{
+ m.addEventListener('click',e=>{if(e.target===m||e.target.closest('.x'))closeM(m);else if(e.target.closest('[data-close]'))closeM(m,true)})});
+addEventListener('keydown',e=>{if(e.key==='Escape'){const m=document.querySelector('.modal.show');m&&closeM(m)}});
+
+// ===== форма → Telegram =====
+document.querySelector('select[name=type]').insertAdjacentHTML('beforeend',TYPES.map(t=>`<option>${t}</option>`).join(''));
+$('form').addEventListener('submit',async e=>{e.preventDefault();
+ const f=Object.fromEntries(new FormData(e.target)),st=$('st'),btn=$('send');
+ const text=`🎉 Новая заявка с сайта\n\nИмя: ${f.name}\nДата: ${f.date||'—'}\nПраздник: ${f.type||'—'}\nTelegram: ${f.telegram||'—'}\nКомментарий: ${f.comment||'—'}`;
+ btn.disabled=true;btn.textContent='Отправляем…';st.textContent='';
+ try{const r=await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:TG_CHAT,text})});
+  if(!r.ok)throw 0;st.style.color='#9ad0a0';st.textContent='Спасибо! Заявка отправлена — я свяжусь с вами в ближайшее время.';e.target.reset()}
+ catch{st.style.color='#e2a66b';st.textContent='Не удалось отправить. Напишите напрямую в Telegram, пожалуйста.'}
+ btn.disabled=false;btn.textContent='Отправить'});
+$('yr').textContent=new Date().getFullYear();
+</script>
+</body>
+</html>
