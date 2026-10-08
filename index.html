@@ -154,6 +154,9 @@ body.go .hgrid>.col.l{transition-delay:.35s}body.go .hgrid>.col.r{transition-del
 .circle img.on{opacity:1}
 .hc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 1.5rem;text-align:center;opacity:0}
 .hc h3{font-size:clamp(2.2rem,5vw,3.75rem)}
+.hc h3{line-height:.95}
+.hc h3 .or{display:block;width:100%;margin:.90rem 0 .0rem;text-align:center;font:italic 400 .95rem/1 var(--serif);color:var(--gold);letter-spacing:0}
+.hc h3 .t2{display:block;width:100%;text-align:center}
 .hc .sl{margin-top:1rem;font:italic 500 clamp(1.1rem,2vw,1.5rem) var(--serif)}
 .hc ul{list-style:none;margin-top:1.75rem;max-width:24rem;color:#e0d2bd;font-size:.95rem}
 .hc li{margin:.6rem 0}.hc li::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold);margin-right:.75rem;vertical-align:middle}
@@ -378,7 +381,7 @@ const HOLIDAYS=[
  {t:'Свадьба',s:'Ваш день — как кино, где главные роли у вас',p:['Авторский сценарий под вашу пару','Тёплые поздравления и интерактивы','Координация тайминга с подрядчиками'],img:'p-wedding.webp',fb:'wedding.webp',th:TH.wedding},
  {t:'Детский праздник',s:'Море смеха, игр и настоящего чуда для малышей',p:['Интерактивы и игры для каждого возраста','Любимые герои и сюрпризы','Безопасный и весёлый тайминг'],img:'p-kids.webp',fb:'outfit1.webp',th:TH.kids},
  {t:'День рождения',s:'Именинник в центре, гости — в восторге',p:['Сценарий под характер именинника','Сюрпризы и тёплые слова для героя','Помощь с таймингом и подрядчиками'],img:'p-birthday.webp',fb:'outfit2.webp',th:TH.birthday},
- {t:'Корпоратив / LIVE-вечер',s:'Сцена, свет и голос, что заполняет зал',p:['Живой вокал — от ретро до хитов','Согласование технического райдера','Два отделения по 40 минут'],img:'p-corporate.webp',fb:'outfit3.webp',th:TH.corporate}];
+ {t:'Корпоратив',t2:'LIVE-вечер',s:'Сцена, свет и голос, что заполняет зал',p:['Живой вокал — от ретро до хитов','Согласование технического райдера','Два отделения по 40 минут'],img:'p-corporate.webp',fb:'outfit3.webp',th:TH.corporate}];
 const REVIEWS=[
  ['Елизавета сделала нашу свадьбу незабываемой. Гости до сих пор вспоминают её конкурсы и тёплые слова. Чувствовалось, что каждый момент продуман лично для нас.','Алина В.','Новосибирск'],
  ['Заказывали ведущую на юбилей мамы. Лиза попала в настроение с первой минуты: и душевно, и весело, без пошлых шуток. Мама была в восторге.','Дмитрий К.','Барнаул'],
@@ -411,9 +414,9 @@ document.querySelectorAll('.rv').forEach(e=>io.observe(e));
 const sec=$('portfolio'),txt=$('txt'),circle=$('circle');
 sec.style.height=(HOLIDAYS.length+1)*100+'vh';
 HOLIDAYS.forEach((h,i)=>{
- const im=new Image();im.onerror=()=>{if(h.fb&&!im.dataset.f){im.dataset.f=1;im.src='img/'+h.fb}};im.src='img/'+h.img;im.alt=h.t;circle.appendChild(im);
+ const im=new Image();im.onerror=()=>{if(h.fb&&!im.dataset.f){im.dataset.f=1;im.src='img/'+h.fb}};im.src='img/'+h.img;im.alt=h.t+(h.t2?' / '+h.t2:'');circle.appendChild(im);
  const d=document.createElement('div');d.className='hc';
- d.innerHTML=`<p class="eyebrow">формат</p><h3>${h.t}</h3><p class="sl gold">${h.s}</p><ul>${h.p.map(x=>`<li>${x}</li>`).join('')}</ul>`;
+ d.innerHTML=`<p class="eyebrow">формат</p><h3>${h.t}${h.t2?`<small class="or">или</small><span class="t2">${h.t2}</span>`:''}</h3><p class="sl gold">${h.s}</p><ul>${h.p.map(x=>`<li>${x}</li>`).join('')}</ul>`;
  txt.appendChild(d)});
 const cards=[...txt.querySelectorAll('.hc')],imgs=[...circle.querySelectorAll('img')],n=HOLIDAYS.length;
 const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
