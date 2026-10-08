@@ -155,7 +155,7 @@ body.go .hgrid>.col.l{transition-delay:.35s}body.go .hgrid>.col.r{transition-del
 .hc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 1.5rem;text-align:center;opacity:0}
 .hc h3{font-size:clamp(2.2rem,5vw,3.75rem)}
 .hc h3{line-height:.95}
-.hc h3 .or{display:block;width:100%;margin:.90rem 0 .0rem;text-align:center;font:italic 400 .95rem/1 var(--serif);color:var(--gold);letter-spacing:0}
+.hc h3 .or{display:block;width:100%;margin:.12rem 0 .08rem;text-align:center;font:italic 400 .95rem/1 var(--serif);color:var(--gold);letter-spacing:0}
 .hc h3 .t2{display:block;width:100%;text-align:center}
 .hc .sl{margin-top:1rem;font:italic 500 clamp(1.1rem,2vw,1.5rem) var(--serif)}
 .hc ul{list-style:none;margin-top:1.75rem;max-width:24rem;color:#e0d2bd;font-size:.95rem}
@@ -232,6 +232,19 @@ html,.panel{scrollbar-width:thin;scrollbar-color:#d9b46f #1a120d}
 .panel::-webkit-scrollbar-track{background:#1e1510;border-radius:0 1.5rem 1.5rem 0}
 .panel::-webkit-scrollbar-thumb{border-color:#1e1510}
 
+/* ===== облегчение для телефонов (самые «дорогие» эффекты отключены) ===== */
+@media(max-width:899px){
+ body{background:linear-gradient(#1f150f,#140e0a 60%,#100b08)}   /* без fixed-фона и градиента на весь экран */
+ body::after{display:none}                                        /* зерно + blend-mode перерисовывали весь экран на каждом кадре */
+ .dock{backdrop-filter:none;background:#160f0af2}
+ .modal{backdrop-filter:none;background:#0a0705f7}
+ #host,#host.cut{filter:none}                                     /* тяжёлая тень на большом изображении */
+ #portfolio .sticky::before{mix-blend-mode:normal;animation:none;opacity:.85}
+ .fp{filter:none}
+ .circle{box-shadow:0 0 50px -12px var(--g1)}
+ .tilt{box-shadow:0 14px 30px -14px #000}
+}
+
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv,.hgrid>*{opacity:1;transform:none}}
 </style>
 </head>
@@ -249,7 +262,7 @@ html,.panel{scrollbar-width:thin;scrollbar-color:#d9b46f #1a120d}
   <div class="beam"></div>
   <div class="hgrid">
     <div class="col l">
-      <div class="tilt"><img src="img/mic.webp" alt="Микрофон на сцене"></div>
+      <div class="tilt"><img src="img/mic.webp" alt="Микрофон на сцене" loading="lazy" decoding="async"></div>
       <div class="tx">
         <h1>Смех. Тепло. <span class="gold">Вау.</span></h1>
         <p class="sub">Вечер в главной роли</p>
@@ -267,7 +280,7 @@ html,.panel{scrollbar-width:thin;scrollbar-color:#d9b46f #1a120d}
       <div class="tx">
         <p class="c"><b>Новосибирск + Ваш город.</b><br>Приеду в ваш город.</p>
       </div>
-      <div class="tilt"><img src="img/guests.webp" alt="Гости на празднике" onerror="this.onerror=null;this.src='img/birthday.webp'"></div>
+      <div class="tilt"><img src="img/guests.webp" alt="Гости на празднике" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='img/birthday.webp'"></div>
     </div>
   </div>
 
@@ -390,11 +403,12 @@ const REVIEWS=[
  ['Выезжали в другой город — всё чётко, без накладок. Сценарий под нашу компанию, индивидуальный подход. Результат превзошёл ожидания.','Сергей П.','Омск']];
 const TYPES=['Свадьба','День рождения','Корпоратив','Юбилей','Выпускной','LIVE-вечер','Концерт / выступление','Другое'];
 const $=id=>document.getElementById(id);
+const lite=matchMedia('(max-width:899px)').matches;   // телефон/узкий экран → облегчённый режим
 
 // ===== ведущая: если есть вырезанный WebP (img/host.webp) — берём его =====
 const host=$('host');
 const cut=new Image();cut.onload=()=>{host.src=cut.src;host.classList.add('cut')};cut.src='img/host.webp';
-const sI=new Image();sI.onload=()=>document.querySelector('.center-st').classList.add('hs');sI.src='img/crystal-strands.webp';
+if(!lite){const sI=new Image();sI.onload=()=>document.querySelector('.center-st').classList.add('hs');sI.src='img/crystal-strands.webp'}   // нити — только на ПК
 const hostReady=new Promise(r=>{if(host.complete)r();else host.onload=host.onerror=r});
 const curtainReady=new Promise(r=>{const i=new Image();i.onload=i.onerror=r;i.src='img/curtain-choc.webp'});
 
@@ -422,7 +436,7 @@ const cards=[...txt.querySelectorAll('.hc')],imgs=[...circle.querySelectorAll('i
 const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
 // ===== тема праздника: свечение + всплывающие эмодзи =====
 const fx=$('fx'),calm=matchMedia('(prefers-reduced-motion:reduce)').matches;
-let theme=-1,secVisible=false,FX_MAX=26;
+let theme=-1,secVisible=false,FX_MAX=lite?8:26;
 function spawn(set,burst){
  if(calm||fx.childElementCount>=FX_MAX)return;
  const p=document.createElement('span'),sz=18+Math.random()*28;
@@ -432,14 +446,14 @@ function spawn(set,burst){
 function applyTheme(i){
  const t=HOLIDAYS[i].th;if(!t)return;
  sec.style.setProperty('--g1',t.g1);sec.style.setProperty('--g2',t.g2);sec.style.setProperty('--ring',t.ring);
- if(secVisible)for(let k=0;k<9;k++)spawn(t.fx,true)}  // «залп» при смене праздника
-setInterval(()=>{if(secVisible&&!document.hidden&&theme>=0)spawn(HOLIDAYS[theme].th.fx)},520);
+ if(secVisible)for(let k=0,m=lite?4:9;k<m;k++)spawn(t.fx,true)}  // «залп» при смене праздника
+setInterval(()=>{if(secVisible&&!document.hidden&&theme>=0)spawn(HOLIDAYS[theme].th.fx)},lite?1100:520);
 new IntersectionObserver(es=>{secVisible=es[0].isIntersecting},{threshold:0}).observe(sec);
 function upd(){
  const r=sec.getBoundingClientRect(),pr=clamp(-r.top/(r.height-innerHeight),0,1),u=pr*n;
  $('pbar').style.width=pr*100+'%';let th=0;for(let m=1;m<n;m++){const t=clamp((u-m+.3)/.6,0,1);th+=180*t*t*(3-2*t)}
  const kk=Math.floor((th+90)/180),loc=th-180*kk;
- circle.style.transform=`rotateY(${loc}deg)`;circle.style.filter=`brightness(${1-Math.abs(loc)/140})`;
+ circle.style.transform=`rotateY(${loc}deg)`;if(!lite)circle.style.filter=`brightness(${1-Math.abs(loc)/140})`;
  const a=Math.min(n-1,kk);if(a!==theme){theme=a;applyTheme(a)}
  $('num').textContent=`0${a+1} / 0${n}`;
  imgs.forEach((im,i)=>im.classList.toggle('on',i===a));
@@ -447,7 +461,7 @@ function upd(){
   if(u<i)  {const f=clamp((u-i+.3)/.3,0,1);o=f;x=50*(1-f);s=.92+.08*f}
   else if(u>i+1){const g=clamp((u-i-1)/.3,0,1);o=1-g;x=-50*g;s=1-.08*g}
   c.style.opacity=o;c.style.transform=`translateX(${x}vw) scale(${s})`})}
-addEventListener('scroll',upd,{passive:true});addEventListener('resize',upd);upd();
+let tick=false;addEventListener('scroll',()=>{if(tick)return;tick=true;requestAnimationFrame(()=>{tick=false;upd()})},{passive:true});addEventListener('resize',upd);upd();
 // шарики по клику на фото (серебряный — фото, остальные — тёплые цвета)
 const hasBl=new Promise(r=>{const i=new Image();i.onload=()=>r(1);i.onerror=()=>r(0);i.src='img/balloon-2.webp'});
 circle.addEventListener('click',async e=>{
