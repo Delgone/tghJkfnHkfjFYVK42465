@@ -42,8 +42,8 @@ h2{font-size:clamp(2.2rem,6vw,3.75rem)}
 #loader.open .stage{opacity:0;transition-duration:.5s}
 /* одно слитное движение: верх уходит быстрее, тяжёлый низ запаздывает (skew),
    затем догоняет с лёгким качанием; ткань собирается в складки (scaleX) */
-#loader.open .l{animation:openL 4.6s linear both}
-#loader.open .r{animation:openR 4.6s linear .15s both}
+#loader.open .l{animation:openL 3.0s linear both}
+#loader.open .r{animation:openR 3.0s linear .15s both}
 @keyframes openL{
  0%{transform:translateX(0%) scaleX(1.000) skewX(0deg)}
  10%{transform:translateX(0%) scaleX(0.983) skewX(2deg)}
@@ -134,12 +134,13 @@ body.go .hgrid>.col.l{transition-delay:.35s}body.go .hgrid>.col.r{transition-del
 @property --ring{syntax:'<color>';inherits:true;initial-value:#d9b46f}
 #portfolio{background:#0f0a07;padding:0;--g1:rgba(255,236,190,.5);--g2:rgba(217,180,111,.3);--ring:#d9b46f;transition:--g1 1.4s ease,--g2 1.4s ease,--ring 1.4s ease}
 /* цветное свечение сцены — цвета меняются из JS при смене праздника */
-#portfolio .sticky::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;mix-blend-mode:screen;
+#portfolio .sticky::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;will-change:opacity;
  background:radial-gradient(ellipse 62% 58% at 72% 46%,var(--g1),transparent 70%),radial-gradient(ellipse 55% 50% at 22% 82%,var(--g2),transparent 72%),radial-gradient(ellipse 40% 35% at 50% 0,var(--g2),transparent 75%);
  animation:glowPulse 6s ease-in-out infinite alternate}
-@keyframes glowPulse{from{opacity:.78;transform:scale(1)}to{opacity:1;transform:scale(1.06)}}
+@keyframes glowPulse{from{opacity:.8}to{opacity:1}}
 .fx{position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none}
-.fp{position:absolute;bottom:-70px;line-height:1;will-change:transform,opacity;filter:drop-shadow(0 0 12px var(--g1));animation:fp var(--t,9s) linear forwards}
+.fp{position:absolute;bottom:-70px;line-height:1;opacity:0;will-change:transform,opacity;text-shadow:0 0 10px var(--g1)}
+.fp.run{animation:fp var(--t,9s) linear forwards}
 @keyframes fp{0%{transform:translate3d(0,0,0) rotate(0) scale(.6);opacity:0}12%{opacity:var(--o,.6)}80%{opacity:var(--o,.6)}100%{transform:translate3d(var(--dx,0),-115vh,0) rotate(var(--rot,0)) scale(1);opacity:0}}
 #portfolio .sticky{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;flex-direction:column}
 @media(min-width:768px){#portfolio .sticky{flex-direction:row}}
@@ -148,7 +149,8 @@ body.go .hgrid>.col.l{transition-delay:.35s}body.go .hgrid>.col.r{transition-del
 .pic{order:1;height:40%;display:flex;align-items:center;justify-content:center;perspective:1300px;position:relative;z-index:2}
 .txt{order:2;position:relative;z-index:2;height:60%;overflow:hidden}
 @media(min-width:768px){.pic{order:2;width:50%;height:100%}.txt{order:1;width:50%;height:100%}}
-.circle{position:relative;width:14rem;height:14rem;border-radius:50%;overflow:hidden;border:2px solid var(--ring);box-shadow:0 0 70px -8px var(--g1),0 0 140px -30px var(--g2),0 30px 80px -30px #000;cursor:pointer;will-change:transform,filter}
+.circle{position:relative;width:14rem;height:14rem;border-radius:50%;overflow:hidden;border:2px solid var(--ring);box-shadow:0 0 70px -8px var(--g1),0 0 140px -30px var(--g2),0 30px 80px -30px #000;cursor:pointer;will-change:transform}
+.circle .shade{position:absolute;inset:0;z-index:2;background:#000;opacity:0;pointer-events:none;will-change:opacity}
 @media(min-width:768px){.circle{width:min(32rem,44vw,72vh);height:min(32rem,44vw,72vh)}}
 .circle img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0}
 .circle img.on{opacity:1}
@@ -239,8 +241,7 @@ html,.panel{scrollbar-width:thin;scrollbar-color:#d9b46f #1a120d}
  .dock{backdrop-filter:none;background:#160f0af2}
  .modal{backdrop-filter:none;background:#0a0705f7}
  #host,#host.cut{filter:none}                                     /* тяжёлая тень на большом изображении */
- #portfolio .sticky::before{mix-blend-mode:normal;animation:none;opacity:.85}
- .fp{filter:none}
+ #portfolio .sticky::before{animation:none;opacity:.85}
  .circle{box-shadow:0 0 50px -12px var(--g1)}
  .tilt{box-shadow:0 14px 30px -14px #000}
 }
@@ -415,9 +416,15 @@ const curtainReady=new Promise(r=>{const i=new Image();i.onload=i.onerror=r;i.sr
 // ===== интро: кулисы раздвигаются =====
 Promise.race([Promise.all([hostReady,curtainReady]),new Promise(r=>setTimeout(r,4000))]).then(()=>{
  const L=$('loader');L.classList.add('rd');
- setTimeout(()=>L.classList.add('open'),1500);
- setTimeout(()=>document.body.classList.add('go'),3900); // героиня проявляется во время второго рывка
- setTimeout(()=>{L.classList.add('gone');document.body.classList.remove('lock');setTimeout(()=>L.remove(),450)},6500);
+ setTimeout(() => L.classList.add('open'), 400); 
+ setTimeout(() => document.body.classList.add('go'), 1300); 
+
+  // Снятие блокировки и скрытие лоадера строго после 2 секунд (+ 150мс технический буфер)
+ setTimeout(() => {
+  L.classList.add('gone');
+  document.body.classList.remove('lock'); 
+  setTimeout(() => L.remove(), 700);
+ }, 2250);
 });
 
 // ===== reveal =====
@@ -433,27 +440,29 @@ HOLIDAYS.forEach((h,i)=>{
  d.innerHTML=`<p class="eyebrow">формат</p><h3>${h.t}${h.t2?`<small class="or">или</small><span class="t2">${h.t2}</span>`:''}</h3><p class="sl gold">${h.s}</p><ul>${h.p.map(x=>`<li>${x}</li>`).join('')}</ul>`;
  txt.appendChild(d)});
 const cards=[...txt.querySelectorAll('.hc')],imgs=[...circle.querySelectorAll('img')],n=HOLIDAYS.length;
+const shade=document.createElement('div');shade.className='shade';circle.appendChild(shade);   // затемнение при повороте — через opacity (GPU), а не filter
 const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
 // ===== тема праздника: свечение + всплывающие эмодзи =====
 const fx=$('fx'),calm=matchMedia('(prefers-reduced-motion:reduce)').matches;
-let theme=-1,secVisible=false,FX_MAX=lite?8:26;
+let theme=-1,secVisible=false;
+// пул заранее созданных эмодзи-элементов: DOM не создаётся/удаляется во время прокрутки
+const pool=Array.from({length:lite?6:10},()=>{const el=document.createElement('span');el.className='fp';el.setAttribute('aria-hidden','true');fx.appendChild(el);const o={el,busy:false};el.addEventListener('animationend',()=>{o.busy=false;el.classList.remove('run')});return o});
 function spawn(set,burst){
- if(calm||fx.childElementCount>=FX_MAX)return;
- const p=document.createElement('span'),sz=18+Math.random()*28;
- p.className='fp';p.textContent=set[Math.floor(Math.random()*set.length)];
- p.style.cssText=`left:${(Math.random()*96).toFixed(1)}%;font-size:${sz.toFixed(0)}px;--t:${(8+Math.random()*6).toFixed(1)}s;--dx:${((Math.random()-.5)*160).toFixed(0)}px;--rot:${((Math.random()-.5)*50).toFixed(0)}deg;--o:${(.3+Math.random()*.35).toFixed(2)};${burst?`animation-delay:${(Math.random()*.9).toFixed(2)}s`:''}`;
- p.addEventListener('animationend',()=>p.remove());fx.appendChild(p)}
+ if(calm)return;const o=pool.find(x=>!x.busy);if(!o)return;
+ const p=o.el;o.busy=true;p.classList.remove('run');p.textContent=set[Math.floor(Math.random()*set.length)];
+ p.style.cssText=`left:${(Math.random()*96).toFixed(1)}%;font-size:${(18+Math.random()*28).toFixed(0)}px;--t:${(8+Math.random()*6).toFixed(1)}s;--dx:${((Math.random()-.5)*160).toFixed(0)}px;--rot:${((Math.random()-.5)*50).toFixed(0)}deg;--o:${(.3+Math.random()*.35).toFixed(2)};animation-delay:${burst?(Math.random()*.9).toFixed(2):0}s`;
+ void p.offsetWidth;p.classList.add('run')}
 function applyTheme(i){
  const t=HOLIDAYS[i].th;if(!t)return;
  sec.style.setProperty('--g1',t.g1);sec.style.setProperty('--g2',t.g2);sec.style.setProperty('--ring',t.ring);
- if(secVisible)for(let k=0,m=lite?4:9;k<m;k++)spawn(t.fx,true)}  // «залп» при смене праздника
-setInterval(()=>{if(secVisible&&!document.hidden&&theme>=0)spawn(HOLIDAYS[theme].th.fx)},lite?1100:520);
+ if(secVisible)for(let k=0;k<(lite?3:5);k++)spawn(t.fx,true)}  // «залп» при смене праздника
+setInterval(()=>{if(secVisible&&!document.hidden&&theme>=0)spawn(HOLIDAYS[theme].th.fx)},1200);
 new IntersectionObserver(es=>{secVisible=es[0].isIntersecting},{threshold:0}).observe(sec);
 function upd(){
  const r=sec.getBoundingClientRect(),pr=clamp(-r.top/(r.height-innerHeight),0,1),u=pr*n;
  $('pbar').style.width=pr*100+'%';let th=0;for(let m=1;m<n;m++){const t=clamp((u-m+.3)/.6,0,1);th+=180*t*t*(3-2*t)}
  const kk=Math.floor((th+90)/180),loc=th-180*kk;
- circle.style.transform=`rotateY(${loc}deg)`;if(!lite)circle.style.filter=`brightness(${1-Math.abs(loc)/140})`;
+ circle.style.transform=`rotateY(${loc}deg)`;shade.style.opacity=(Math.abs(loc)/140).toFixed(3);
  const a=Math.min(n-1,kk);if(a!==theme){theme=a;applyTheme(a)}
  $('num').textContent=`0${a+1} / 0${n}`;
  imgs.forEach((im,i)=>im.classList.toggle('on',i===a));
