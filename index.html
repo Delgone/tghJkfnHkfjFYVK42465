@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Елизавета — Ведущая мероприятий · Новосибирск</title>
+<title>Имя Фамилия — Ведущая мероприятий · Ваш Город</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="image" href="img/curtain-choc.webp">
+<link rel="preload" as="image" href="img/host.webp">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root{--lift:6rem;--bg:#120d0a;--choc:#1e1510;--gold:#d9b46f;--gold2:#a8844a;--ink:#f1e6d4;--mut:#b3a28e;--serif:'Playfair Display',Georgia,serif;--sans:'Inter',system-ui,sans-serif}
@@ -29,7 +31,7 @@ section{position:relative;padding:6rem 1.5rem}
 h2{font-size:clamp(2.2rem,6vw,3.75rem)}
 .rv{opacity:0;transform:translateY(24px);transition:opacity .7s,transform .7s}.rv.in{opacity:1;transform:none}
 
-/* ===== интро: кулисы (фото img/curtain-choc.webp, без файла — CSS-запасной вариант) ===== */
+/* ===== интро: кулисы (фото img/curtain-choc.jpg, без файла — CSS-запасной вариант) ===== */
 #loader{position:fixed;inset:0;z-index:400;overflow:hidden;background:transparent}
 #loader .cu{position:absolute;top:0;bottom:0;left:-10%;width:61%;z-index:1;transform-origin:top left;will-change:transform;
  background:linear-gradient(180deg,#0005,transparent 22%,transparent 78%,#0007),url(img/curtain-choc.webp) left center/163.9% 100% no-repeat,repeating-linear-gradient(90deg,#150e09 0,#2d1f16 3.5%,#0f0906 7%,#26190f 10.5%,#150e09 14%);box-shadow:inset -20px 0 40px #000b}
@@ -42,8 +44,8 @@ h2{font-size:clamp(2.2rem,6vw,3.75rem)}
 #loader.open .stage{opacity:0;transition-duration:.5s}
 /* одно слитное движение: верх уходит быстрее, тяжёлый низ запаздывает (skew),
    затем догоняет с лёгким качанием; ткань собирается в складки (scaleX) */
-#loader.open .l{animation:openL 3.0s linear both}
-#loader.open .r{animation:openR 3.0s linear .15s both}
+#loader.open .l{animation:openL 2.3s linear both}
+#loader.open .r{animation:openR 2.3s linear .15s both}
 @keyframes openL{
  0%{transform:translateX(0%) scaleX(1.000) skewX(0deg)}
  10%{transform:translateX(0%) scaleX(0.983) skewX(2deg)}
@@ -92,7 +94,6 @@ h2{font-size:clamp(2.2rem,6vw,3.75rem)}
 .center-st{grid-area:c;position:relative;display:flex;align-items:flex-end;justify-content:center;min-height:30rem}
 .center-st::before,.center-st::after{content: ""; position: absolute; top: -2.5rem; bottom: 2rem; width: 45%; pointer-events: none;
   background: radial-gradient(circle, #f6e3b8 0 1px, transparent 1.6px) 0 0/8px 9px;
-  /* Делаем супер-плавное растворение к центру, чтобы не было рубленых краев */
   -webkit-mask-image: linear-gradient(var(--d), #000 0%, transparent 100%);
   mask-image: linear-gradient(var(--d), #000 0%, transparent 100%);}
 .center-st::before{left:-6%;--d:to right}.center-st::after{right:-6%;--d:to left}
@@ -105,11 +106,11 @@ h2{font-size:clamp(2.2rem,6vw,3.75rem)}
 #host{position:relative;z-index:1;display:block;width:100%;height:70vh;max-height:48rem;margin-bottom:var(--lift);object-fit:contain;object-position:bottom center;filter:saturate(.8) sepia(.2) drop-shadow(0 20px 40px #000a)}
 #host.cut{filter:drop-shadow(0 20px 40px #000a);}
 @media(max-width:899px){
- #hero{padding-bottom:11rem}                 /* место под многострочный dock */
+ #hero{padding-bottom:11rem}
  :root{--lift:2.5rem}
  .center-st{min-height:0}
- .col.l .tx{order:-1}                        /* сначала цепляющий текст */
- .col.l .tilt{display:none}                  /* декор-фото микрофона на мобильных не мешает порядку «текст → ведущая» */
+ .col.l .tx{order:-1}
+ .col.l .tilt{display:none}
  .col.l,.col.r{gap:1rem}
  .col.l .tx,.col.r .tx{text-align:center}
  .col.l{justify-content:flex-start}
@@ -133,14 +134,12 @@ body.go .hgrid>.col.l{transition-delay:.35s}body.go .hgrid>.col.r{transition-del
 @property --g2{syntax:'<color>';inherits:true;initial-value:rgba(217,180,111,.3)}
 @property --ring{syntax:'<color>';inherits:true;initial-value:#d9b46f}
 #portfolio{background:#0f0a07;padding:0;--g1:rgba(255,236,190,.5);--g2:rgba(217,180,111,.3);--ring:#d9b46f;transition:--g1 1.4s ease,--g2 1.4s ease,--ring 1.4s ease}
-/* цветное свечение сцены — цвета меняются из JS при смене праздника */
-#portfolio .sticky::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;will-change:opacity;
+#portfolio .sticky::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;mix-blend-mode:screen;
  background:radial-gradient(ellipse 62% 58% at 72% 46%,var(--g1),transparent 70%),radial-gradient(ellipse 55% 50% at 22% 82%,var(--g2),transparent 72%),radial-gradient(ellipse 40% 35% at 50% 0,var(--g2),transparent 75%);
  animation:glowPulse 6s ease-in-out infinite alternate}
-@keyframes glowPulse{from{opacity:.8}to{opacity:1}}
+@keyframes glowPulse{from{opacity:.78;transform:scale(1)}to{opacity:1;transform:scale(1.06)}}
 .fx{position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none}
-.fp{position:absolute;bottom:-70px;line-height:1;opacity:0;will-change:transform,opacity;text-shadow:0 0 10px var(--g1)}
-.fp.run{animation:fp var(--t,9s) linear forwards}
+.fp{position:absolute;bottom:-70px;line-height:1;will-change:transform,opacity;filter:drop-shadow(0 0 12px var(--g1));animation:fp var(--t,9s) linear forwards}
 @keyframes fp{0%{transform:translate3d(0,0,0) rotate(0) scale(.6);opacity:0}12%{opacity:var(--o,.6)}80%{opacity:var(--o,.6)}100%{transform:translate3d(var(--dx,0),-115vh,0) rotate(var(--rot,0)) scale(1);opacity:0}}
 #portfolio .sticky{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;flex-direction:column}
 @media(min-width:768px){#portfolio .sticky{flex-direction:row}}
@@ -149,16 +148,12 @@ body.go .hgrid>.col.l{transition-delay:.35s}body.go .hgrid>.col.r{transition-del
 .pic{order:1;height:40%;display:flex;align-items:center;justify-content:center;perspective:1300px;position:relative;z-index:2}
 .txt{order:2;position:relative;z-index:2;height:60%;overflow:hidden}
 @media(min-width:768px){.pic{order:2;width:50%;height:100%}.txt{order:1;width:50%;height:100%}}
-.circle{position:relative;width:14rem;height:14rem;border-radius:50%;overflow:hidden;border:2px solid var(--ring);box-shadow:0 0 70px -8px var(--g1),0 0 140px -30px var(--g2),0 30px 80px -30px #000;cursor:pointer;will-change:transform}
-.circle .shade{position:absolute;inset:0;z-index:2;background:#000;opacity:0;pointer-events:none;will-change:opacity}
-@media(min-width:768px){.circle{width:min(32rem,44vw,72vh);height:min(32rem,44vw,72vh)}}
+.circle{position:relative;width:14rem;height:14rem;border-radius:50%;overflow:hidden;border:2px solid var(--ring);box-shadow:0 0 70px -8px var(--g1),0 0 140px -30px var(--g2),0 30px 80px -30px #000;cursor:pointer;will-change:transform,filter}
+@media(min-width:768px){.circle{width:20rem;height:20rem}}
 .circle img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0}
 .circle img.on{opacity:1}
 .hc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 1.5rem;text-align:center;opacity:0}
 .hc h3{font-size:clamp(2.2rem,5vw,3.75rem)}
-.hc h3{line-height:.95}
-.hc h3 .or{display:block;width:100%;margin:.12rem 0 .08rem;text-align:center;font:italic 400 .95rem/1 var(--serif);color:var(--gold);letter-spacing:0}
-.hc h3 .t2{display:block;width:100%;text-align:center}
 .hc .sl{margin-top:1rem;font:italic 500 clamp(1.1rem,2vw,1.5rem) var(--serif)}
 .hc ul{list-style:none;margin-top:1.75rem;max-width:24rem;color:#e0d2bd;font-size:.95rem}
 .hc li{margin:.6rem 0}.hc li::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold);margin-right:.75rem;vertical-align:middle}
@@ -197,12 +192,9 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);box-shadow:0 0 
 input[type=date]{color-scheme:dark}select option{background:#1e1510}textarea{resize:none}
 #st{text-align:center;font-size:.9rem;min-height:1.4em}
 .ct{margin-top:3rem;text-align:center}.ct .tel{font-size:1.1rem;text-decoration:none;font-weight:500}.ct h3{margin-bottom:1rem;font-size:1.5rem}
-.soc{display:flex;gap:1.1rem;justify-content:center;margin-top:1.5rem}
-.soc a{width:3.4rem;height:3.4rem;border-radius:50%;display:grid;place-items:center;color:#2a1a0c;text-decoration:none;
- background:radial-gradient(circle at 32% 25%,#fff0c4 0,#e9c987 28%,#c99a4b 62%,#9a6f2e 100%);
- border:2px solid #b88a3e;box-shadow:inset 0 1px 1px #fff9,inset 0 -3px 6px #7a551d55,0 8px 22px -8px #d9b46f99;transition:transform .3s,box-shadow .3s,filter .3s}
-.soc a svg{width:1.45rem;height:1.45rem;display:block}
-.soc a:hover,.soc a:focus-visible{transform:translateY(-4px) scale(1.06);filter:brightness(1.1);box-shadow:inset 0 1px 1px #fff9,inset 0 -3px 6px #7a551d55,0 14px 30px -8px #f0cf8fcc;outline:none}
+.soc{display:flex;gap:1rem;justify-content:center;margin-top:1.5rem}
+.soc a{width:2.75rem;height:2.75rem;border-radius:50%;border:1px solid #fff3;display:grid;place-items:center;text-decoration:none;font-size:.85rem;transition:.3s}
+.soc a:hover{border-color:var(--gold);background:#ffffff10}
 footer{padding:3rem 1.5rem;border-top:1px solid #ffffff1a}
 footer .wrap{display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;align-items:center}
 footer p{color:var(--mut);font-size:.9rem}footer small{color:#8a7a68}
@@ -223,29 +215,6 @@ footer p{color:var(--mut);font-size:.9rem}footer small{color:#8a7a68}
 .panel li b{display:block;font:italic 500 1.2rem var(--serif);color:var(--gold);margin-bottom:.2rem}
 .panel li span{font-size:.92rem;color:var(--mut)}
 
-/* ===== ползунок прокрутки: тёмный + золотой ===== */
-html,.panel{scrollbar-width:thin;scrollbar-color:#d9b46f #1a120d}
-@supports selector(::-webkit-scrollbar){html,.panel{scrollbar-width:auto;scrollbar-color:auto}}
-::-webkit-scrollbar{width:12px;height:12px}
-::-webkit-scrollbar-track{background:#120d0a;box-shadow:inset 1px 0 0 #d9b46f22}
-::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#f0d9a4,#d9b46f 45%,#a8844a);border-radius:999px;border:3px solid #120d0a}
-::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg,#fff0c8,#e8c785 45%,#c19a55)}
-::-webkit-scrollbar-corner{background:#120d0a}
-.panel::-webkit-scrollbar-track{background:#1e1510;border-radius:0 1.5rem 1.5rem 0}
-.panel::-webkit-scrollbar-thumb{border-color:#1e1510}
-
-/* ===== облегчение для телефонов (самые «дорогие» эффекты отключены) ===== */
-@media(max-width:899px){
- body{background:linear-gradient(#1f150f,#140e0a 60%,#100b08)}   /* без fixed-фона и градиента на весь экран */
- body::after{display:none}                                        /* зерно + blend-mode перерисовывали весь экран на каждом кадре */
- .dock{backdrop-filter:none;background:#160f0af2}
- .modal{backdrop-filter:none;background:#0a0705f7}
- #host,#host.cut{filter:none}                                     /* тяжёлая тень на большом изображении */
- #portfolio .sticky::before{animation:none;opacity:.85}
- .circle{box-shadow:0 0 50px -12px var(--g1)}
- .tilt{box-shadow:0 14px 30px -14px #000}
-}
-
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv,.hgrid>*{opacity:1;transform:none}}
 </style>
 </head>
@@ -263,7 +232,7 @@ html,.panel{scrollbar-width:thin;scrollbar-color:#d9b46f #1a120d}
   <div class="beam"></div>
   <div class="hgrid">
     <div class="col l">
-      <div class="tilt"><img src="img/mic.webp" alt="Микрофон на сцене" loading="lazy" decoding="async"></div>
+      <div class="tilt"><img src="img/mic.webp" alt="Микрофон на сцене"></div>
       <div class="tx">
         <h1>Смех. Тепло. <span class="gold">Вау.</span></h1>
         <p class="sub">Вечер в главной роли</p>
@@ -272,16 +241,16 @@ html,.panel{scrollbar-width:thin;scrollbar-color:#d9b46f #1a120d}
 
     <div class="center-st">
       <div class="floor"></div>
-      <img id="host" src="img/portrait.webp" alt="Елизавета — ведущая мероприятий">
+      <img id="host" src="img/portrait.webp" alt="Имя — ведущая мероприятий">
       <div class="big" aria-hidden="true">ВЕДУЩАЯ</div>
     </div>
 
     <div class="col r">
-      <div class="tx"><p class="nm gold">Елизавета</p></div>
+      <div class="tx"><p class="nm gold">Имя</p></div>
       <div class="tx">
-        <p class="c"><b>Новосибирск + Ваш город.</b><br>Приеду в ваш город.</p>
+        <p class="c"><b>Ваш Город + любой город.</b><br>Приеду к вам.</p>
       </div>
-      <div class="tilt"><img src="img/guests.webp" alt="Гости на празднике" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='img/birthday.webp'"></div>
+      <div class="tilt"><img src="img/guests.webp" alt="Гости на празднике" onerror="this.onerror=null;this.src='img/birthday.webp'"></div>
     </div>
   </div>
 
@@ -331,7 +300,7 @@ html,.panel{scrollbar-width:thin;scrollbar-color:#d9b46f #1a120d}
           <label>Дата<input type="date" name="date"></label>
           <label>Праздник *<select name="type" required><option value="" disabled selected>Выберите формат</option></select></label>
         </div>
-        <label>Telegram или телефон *<input name="telegram" id="contactField" required autocomplete="tel" placeholder="@username или +7 900 000-00-00"></label>
+        <label>Telegram <small>(необязательно)</small><input name="telegram" placeholder="@username или номер"></label>
         <label>Комментарий <small>(необязательно)</small><textarea name="comment" rows="3" placeholder="Расскажите о вашем празднике"></textarea></label>
         <button class="btn" type="submit" id="send">Отправить</button>
         <p id="st" role="status"></p>
@@ -341,9 +310,9 @@ html,.panel{scrollbar-width:thin;scrollbar-color:#d9b46f #1a120d}
       <h3>Свяжусь</h3>
       <a class="tel gold" href="tel:+70000000000" style="font-style:normal">+7 (000) 000-00-00</a>
       <div class="soc">
-        <a href="https://vk.com/LissKerrlon" target="_blank" rel="noreferrer" aria-label="VK"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.579 6.855c.14-.465 0-.806-.662-.806h-2.193c-.558 0-.815.295-.954.619 0 0-1.115 2.719-2.695 4.482-.51.513-.743.675-1.021.675-.139 0-.341-.162-.341-.627V6.855c0-.558-.161-.806-.626-.806H9.642c-.348 0-.558.258-.558.504 0 .528.79.65.871 2.138v3.228c0 .707-.127.836-.407.836-.743 0-2.551-2.729-3.624-5.853-.209-.607-.42-.853-.98-.853H2.752c-.627 0-.752.295-.752.619 0 .582.743 3.462 3.461 7.271 1.812 2.601 4.363 4.011 6.687 4.011 1.393 0 1.565-.313 1.565-.853v-1.966c0-.626.133-.752.574-.752.324 0 .882.164 2.183 1.417 1.486 1.486 1.732 2.153 2.567 2.153h2.192c.626 0 .939-.313.759-.931-.197-.615-.907-1.51-1.849-2.569-.512-.604-1.277-1.254-1.51-1.579-.325-.419-.231-.604 0-.976.001.001 2.672-3.761 2.95-5.04z"/></svg></a>
-        <a href="https://t.me/elizaveta_host" target="_blank" rel="noreferrer" aria-label="Telegram"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M21.5 3.2 2.6 10.5c-.9.4-.9 1.1-.2 1.3l4.8 1.5 1.8 5.6c.2.6.4.8.9.8.4 0 .6-.2.9-.4l2.3-2.2 4.7 3.5c.9.5 1.5.2 1.7-.8l3.1-14.9c.3-1.2-.4-1.7-1.4-1.5zM9 13.3l9.3-5.9c.4-.3.8-.1.5.2l-7.7 7-.3 3.2z"/></svg></a>
-        <a href="https://instagram.com/elizaveta_host" target="_blank" rel="noreferrer" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.2"/><circle cx="12" cy="12" r="4.1"/><circle cx="17.4" cy="6.6" r=".9" fill="currentColor" stroke="none"/></svg></a>
+        <a href="#" target="_blank" rel="noreferrer" aria-label="VK">VK</a>
+        <a href="#" target="_blank" rel="noreferrer" aria-label="Telegram">TG</a>
+        <a href="#" target="_blank" rel="noreferrer" aria-label="Instagram">IG</a>
       </div>
     </div>
   </div>
@@ -351,7 +320,7 @@ html,.panel{scrollbar-width:thin;scrollbar-color:#d9b46f #1a120d}
 </main>
 
 <footer><div class="wrap">
-  <div><h3 style="font-size:1.25rem">Елизавета</h3><p>Ведущая мероприятий · Новосибирск · выезд в любой город</p></div>
+  <div><h3 style="font-size:1.25rem">Имя Фамилия</h3><p>Ведущая мероприятий · Ваш Город · выезд в любой город</p></div>
   <small>© <span id="yr"></span> · сделано с любовью к празднику</small>
 </div></footer>
 
@@ -360,7 +329,7 @@ html,.panel{scrollbar-width:thin;scrollbar-color:#d9b46f #1a120d}
   <div class="panel">
     <button class="x" type="button">✕ Закрыть</button>
     <h2 id="t-smm">SMM / <span class="gold">Маркетинг</span></h2>
-    <p class="lead"><!-- TODO: свой текст -->Помогаю проектам и командам рассказывать о себе в соцсетях. Здесь будет описание направления.</p>
+    <p class="lead">Помогаю проектам и командам рассказывать о себе в соцсетях. Здесь будет описание направления.</p>
     <ul>
       <li><b>Ведение соцсетей</b><span>Контент-план, посты, сторис</span></li>
       <li><b>Продвижение</b><span>Стратегия и работа с аудиторией</span></li>
@@ -373,19 +342,19 @@ html,.panel{scrollbar-width:thin;scrollbar-color:#d9b46f #1a120d}
 <div class="modal" id="m-pets" role="dialog" aria-modal="true" aria-labelledby="t-pets" hidden>
   <div class="panel">
     <button class="x" type="button">✕ Закрыть</button>
-    <h2 id="t-pets" style="font-size:clamp(1.7rem,4.5vw,2.4rem)">Добрые дела: <span class="gold">История Буси</span></h2>
+    <h2 id="t-pets" style="font-size:clamp(1.7rem,4.5vw,2.4rem)">Добрые дела: <span class="gold">История спасения</span> 🐾</h2>
     <p class="lead">Я верю, что тепло нужно дарить не только на праздниках, но и в реальной жизни. Я активно помогаю приютам и животным, попавшим в беду, и хочу поделиться одной историей.</p>
-    <p>Недавно к зданию на Красной Сибири, 101 прибежала собака по имени Буся с тяжело перебитой лапой. Мы экстренно отвезли её в новосибирскую клинику «Вега». Благодаря поддержке неравнодушных людей, всего за одни сутки нам удалось собрать 40 500 рублей на сложную операцию и стационар.</p>
-    <p><b style="color:#fff">Результат:</b> лапу удалось спасти! Сейчас Буся живет в любящей семье, а мы продолжаем навещать её и контролировать условия содержания.</p>
+    <p>Недавно мы встретили животное с тяжело перебитой лапой и экстренно отвезли в ветеринарную клинику. Благодаря поддержке неравнодушных людей, всего за одни сутки нам удалось собрать необходимую сумму на сложную операцию и стационар.</p>
+    <p><b style="color:#fff">Результат:</b> лапу удалось спасти! Сейчас питомец живет в любящей семье, а мы продолжаем навещать и контролировать условия содержания.</p>
     <p>Эта история — главное доказательство того, что вместе мы можем совершать настоящие чудеса. Если вы тоже не можете пройти мимо чужой беды и хотите помогать животным, присоединяйтесь к нашим сборам.</p>
-    <p>Все прозрачные отчёты, чеки по операциям и актуальные реквизиты для помощи приютам я закрепляю в своём Telegram: <a class="tg" href="https://t.me/LissKerrlon" target="_blank" rel="noreferrer">@LissKerrlon</a></p>
-    <a class="btn" href="https://t.me/LissKerrlon" target="_blank" rel="noreferrer">Открыть Telegram</a>
+    <p>Все прозрачные отчёты, чеки по операциям и актуальные реквизиты для помощи приютам я закрепляю в своём Telegram: <a class="tg" href="#" target="_blank" rel="noreferrer">@username</a></p>
+    <a class="btn" href="#" target="_blank" rel="noreferrer">Открыть Telegram</a>
   </div>
 </div>
 
 <script>
 // ===== настройки =====
-const TG_TOKEN='', TG_CHAT='';
+const TG_TOKEN='YOUR_BOT_TOKEN_HERE', TG_CHAT='YOUR_CHAT_ID_HERE';
 const TH={
  wedding:  {g1:'rgba(255,240,205,.58)',g2:'rgba(230,190,120,.38)',ring:'#fff0cf',fx:['💍','💍','🤍','✨','🕊️']},
  kids:     {g1:'rgba(255,130,190,.5)', g2:'rgba(80,200,255,.36)', ring:'#ffb3dc',fx:['🎉','⭐','🧸','🍭','🎉']},
@@ -393,38 +362,31 @@ const TH={
  corporate:{g1:'rgba(200,70,255,.55)', g2:'rgba(40,200,255,.38)', ring:'#d68cff',fx:['🪩','🪩','✨','🎤','🥂']}};
 const HOLIDAYS=[
  {t:'Свадьба',s:'Ваш день — как кино, где главные роли у вас',p:['Авторский сценарий под вашу пару','Тёплые поздравления и интерактивы','Координация тайминга с подрядчиками'],img:'p-wedding.webp',fb:'wedding.webp',th:TH.wedding},
- {t:'Детский праздник',s:'Море смеха, игр и настоящего чуда для малышей',p:['Интерактивы и игры для каждого возраста','Любимые герои и сюрпризы','Безопасный и весёлый тайминг'],img:'p-kids.webp',fb:'outfit1.webp',th:TH.kids},
- {t:'День рождения',s:'Именинник в центре, гости — в восторге',p:['Сценарий под характер именинника','Сюрпризы и тёплые слова для героя','Помощь с таймингом и подрядчиками'],img:'p-birthday.webp',fb:'outfit2.webp',th:TH.birthday},
- {t:'Корпоратив',t2:'LIVE-вечер',s:'Сцена, свет и голос, что заполняет зал',p:['Живой вокал — от ретро до хитов','Согласование технического райдера','Два отделения по 40 минут'],img:'p-corporate.webp',fb:'outfit3.webp',th:TH.corporate}];
+ {t:'Детский праздник',s:'Море смеха, игр и настоящего чуда для малышей',p:['Интерактивы и игры для каждого возраста','Любимые герои и сюрпризы','Безопасный и весёлый тайминг'],img:'p-kids.webp',fb:'outfit1.png',th:TH.kids},
+ {t:'День рождения',s:'Именинник в центре, гости — в восторге',p:['Сценарий под характер именинника','Сюрпризы и тёплые слова для героя','Помощь с таймингом и подрядчиками'],img:'p-birthday.webp',fb:'outfit2.png',th:TH.birthday},
+ {t:'Корпоратив / LIVE-вечер',s:'Сцена, свет и голос, что заполняет зал',p:['Живой вокал — от ретро до хитов','Согласование технического райдера','Два отделения по 40 минут'],img:'p-corporate.webp',fb:'outfit3.png',th:TH.corporate}];
 const REVIEWS=[
- ['Елизавета сделала нашу свадьбу незабываемой. Гости до сих пор вспоминают её конкурсы и тёплые слова. Чувствовалось, что каждый момент продуман лично для нас.','Алина В.','Новосибирск'],
- ['Заказывали ведущую на юбилей мамы. Лиза попала в настроение с первой минуты: и душевно, и весело, без пошлых шуток. Мама была в восторге.','Дмитрий К.','Барнаул'],
- ['Корпоратив на 120 человек прошёл на ура. Тайминг держала идеально, зал был в огне. Отдельное спасибо за помощь с подрядчиками.','Ольга С.','Томск'],
- ['Живой вокал на нашем вечере — это просто волшебство. Атмосфера кабаре, тёплый свет, гости не хотели расходиться. Очень рекомендую.','Марина и Игорь','Новосибирск'],
- ['Выезжали в другой город — всё чётко, без накладок. Сценарий под нашу компанию, индивидуальный подход. Результат превзошёл ожидания.','Сергей П.','Омск']];
+ ['Ведущая сделала нашу свадьбу незабываемой. Гости до сих пор вспоминают её конкурсы и тёплые слова. Чувствовалось, что каждый момент продуман лично для нас.','Имя К.','Город N'],
+ ['Заказывали ведущую на юбилей мамы. Она попала в настроение с первой минуты: и душевно, и весело, без пошлых шуток. Мама была в восторге.','Имя К.','Город N'],
+ ['Корпоратив на 120 человек прошёл на ура. Тайминг держала идеально, зал был в огне. Отдельное спасибо за помощь с подрядчиками.','Имя К.','Город N'],
+ ['Живой вокал на нашем вечере — это просто волшебство. Атмосфера кабаре, тёплый свет, гости не хотели расходиться. Очень рекомендую.','Имя К.','Город N'],
+ ['Выезжали в другой город — всё чётко, без накладок. Сценарий под нашу компанию, индивидуальный подход. Результат превзошёл ожидания.','Имя К.','Город N']];
 const TYPES=['Свадьба','День рождения','Корпоратив','Юбилей','Выпускной','LIVE-вечер','Концерт / выступление','Другое'];
 const $=id=>document.getElementById(id);
-const lite=matchMedia('(max-width:899px)').matches;   // телефон/узкий экран → облегчённый режим
 
-// ===== ведущая: если есть вырезанный WebP (img/host.webp) — берём его =====
+// ===== ведущая: если есть вырезанный PNG (img/host.png) — берём его =====
 const host=$('host');
-const cut=new Image();cut.onload=()=>{host.src=cut.src;host.classList.add('cut')};cut.src='img/host.webp';
-if(!lite){const sI=new Image();sI.onload=()=>document.querySelector('.center-st').classList.add('hs');sI.src='img/crystal-strands.webp'}   // нити — только на ПК
+const cut=new Image();cut.onload=()=>{host.src=cut.src;host.classList.add('cut')};cut.src='img/host.png';
+const sI=new Image();sI.onload=()=>document.querySelector('.center-st').classList.add('hs');sI.src='img/crystal-strands.webp';
 const hostReady=new Promise(r=>{if(host.complete)r();else host.onload=host.onerror=r});
 const curtainReady=new Promise(r=>{const i=new Image();i.onload=i.onerror=r;i.src='img/curtain-choc.webp'});
 
 // ===== интро: кулисы раздвигаются =====
 Promise.race([Promise.all([hostReady,curtainReady]),new Promise(r=>setTimeout(r,4000))]).then(()=>{
  const L=$('loader');L.classList.add('rd');
- setTimeout(() => L.classList.add('open'), 400); 
- setTimeout(() => document.body.classList.add('go'), 1300); 
-
-  // Снятие блокировки и скрытие лоадера строго после 2 секунд (+ 150мс технический буфер)
- setTimeout(() => {
-  L.classList.add('gone');
-  document.body.classList.remove('lock'); 
-  setTimeout(() => L.remove(), 700);
- }, 2250);
+ setTimeout(()=>L.classList.add('open'),800);
+ setTimeout(()=>document.body.classList.add('go'),2300); // героиня проявляется во время второго рывка
+ setTimeout(()=>{L.classList.add('gone');document.body.classList.remove('lock');setTimeout(()=>L.remove(),450)},3600);
 });
 
 // ===== reveal =====
@@ -435,34 +397,32 @@ document.querySelectorAll('.rv').forEach(e=>io.observe(e));
 const sec=$('portfolio'),txt=$('txt'),circle=$('circle');
 sec.style.height=(HOLIDAYS.length+1)*100+'vh';
 HOLIDAYS.forEach((h,i)=>{
- const im=new Image();im.onerror=()=>{if(h.fb&&!im.dataset.f){im.dataset.f=1;im.src='img/'+h.fb}};im.src='img/'+h.img;im.alt=h.t+(h.t2?' / '+h.t2:'');circle.appendChild(im);
+ const im=new Image();im.onerror=()=>{if(h.fb&&!im.dataset.f){im.dataset.f=1;im.src='img/'+h.fb}};im.src='img/'+h.img;im.alt=h.t;circle.appendChild(im);
  const d=document.createElement('div');d.className='hc';
- d.innerHTML=`<p class="eyebrow">формат</p><h3>${h.t}${h.t2?`<small class="or">или</small><span class="t2">${h.t2}</span>`:''}</h3><p class="sl gold">${h.s}</p><ul>${h.p.map(x=>`<li>${x}</li>`).join('')}</ul>`;
+ d.innerHTML=`<p class="eyebrow">формат</p><h3>${h.t}</h3><p class="sl gold">${h.s}</p><ul>${h.p.map(x=>`<li>${x}</li>`).join('')}</ul>`;
  txt.appendChild(d)});
 const cards=[...txt.querySelectorAll('.hc')],imgs=[...circle.querySelectorAll('img')],n=HOLIDAYS.length;
-const shade=document.createElement('div');shade.className='shade';circle.appendChild(shade);   // затемнение при повороте — через opacity (GPU), а не filter
 const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
 // ===== тема праздника: свечение + всплывающие эмодзи =====
 const fx=$('fx'),calm=matchMedia('(prefers-reduced-motion:reduce)').matches;
-let theme=-1,secVisible=false;
-// пул заранее созданных эмодзи-элементов: DOM не создаётся/удаляется во время прокрутки
-const pool=Array.from({length:lite?6:10},()=>{const el=document.createElement('span');el.className='fp';el.setAttribute('aria-hidden','true');fx.appendChild(el);const o={el,busy:false};el.addEventListener('animationend',()=>{o.busy=false;el.classList.remove('run')});return o});
+let theme=-1,secVisible=false,FX_MAX=26;
 function spawn(set,burst){
- if(calm)return;const o=pool.find(x=>!x.busy);if(!o)return;
- const p=o.el;o.busy=true;p.classList.remove('run');p.textContent=set[Math.floor(Math.random()*set.length)];
- p.style.cssText=`left:${(Math.random()*96).toFixed(1)}%;font-size:${(18+Math.random()*28).toFixed(0)}px;--t:${(8+Math.random()*6).toFixed(1)}s;--dx:${((Math.random()-.5)*160).toFixed(0)}px;--rot:${((Math.random()-.5)*50).toFixed(0)}deg;--o:${(.3+Math.random()*.35).toFixed(2)};animation-delay:${burst?(Math.random()*.9).toFixed(2):0}s`;
- void p.offsetWidth;p.classList.add('run')}
+ if(calm||fx.childElementCount>=FX_MAX)return;
+ const p=document.createElement('span'),sz=18+Math.random()*28;
+ p.className='fp';p.textContent=set[Math.floor(Math.random()*set.length)];
+ p.style.cssText=`left:${(Math.random()*96).toFixed(1)}%;font-size:${sz.toFixed(0)}px;--t:${(8+Math.random()*6).toFixed(1)}s;--dx:${((Math.random()-.5)*160).toFixed(0)}px;--rot:${((Math.random()-.5)*50).toFixed(0)}deg;--o:${(.3+Math.random()*.35).toFixed(2)};${burst?`animation-delay:${(Math.random()*.9).toFixed(2)}s`:''}`;
+ p.addEventListener('animationend',()=>p.remove());fx.appendChild(p)}
 function applyTheme(i){
  const t=HOLIDAYS[i].th;if(!t)return;
  sec.style.setProperty('--g1',t.g1);sec.style.setProperty('--g2',t.g2);sec.style.setProperty('--ring',t.ring);
- if(secVisible)for(let k=0;k<(lite?3:5);k++)spawn(t.fx,true)}  // «залп» при смене праздника
-setInterval(()=>{if(secVisible&&!document.hidden&&theme>=0)spawn(HOLIDAYS[theme].th.fx)},1200);
+ if(secVisible)for(let k=0;k<9;k++)spawn(t.fx,true)}  // «залп» при смене праздника
+setInterval(()=>{if(secVisible&&!document.hidden&&theme>=0)spawn(HOLIDAYS[theme].th.fx)},520);
 new IntersectionObserver(es=>{secVisible=es[0].isIntersecting},{threshold:0}).observe(sec);
 function upd(){
  const r=sec.getBoundingClientRect(),pr=clamp(-r.top/(r.height-innerHeight),0,1),u=pr*n;
  $('pbar').style.width=pr*100+'%';let th=0;for(let m=1;m<n;m++){const t=clamp((u-m+.3)/.6,0,1);th+=180*t*t*(3-2*t)}
  const kk=Math.floor((th+90)/180),loc=th-180*kk;
- circle.style.transform=`rotateY(${loc}deg)`;shade.style.opacity=(Math.abs(loc)/140).toFixed(3);
+ circle.style.transform=`rotateY(${loc}deg)`;circle.style.filter=`brightness(${1-Math.abs(loc)/140})`;
  const a=Math.min(n-1,kk);if(a!==theme){theme=a;applyTheme(a)}
  $('num').textContent=`0${a+1} / 0${n}`;
  imgs.forEach((im,i)=>im.classList.toggle('on',i===a));
@@ -470,26 +430,24 @@ function upd(){
   if(u<i)  {const f=clamp((u-i+.3)/.3,0,1);o=f;x=50*(1-f);s=.92+.08*f}
   else if(u>i+1){const g=clamp((u-i-1)/.3,0,1);o=1-g;x=-50*g;s=1-.08*g}
   c.style.opacity=o;c.style.transform=`translateX(${x}vw) scale(${s})`})}
-let tick=false;addEventListener('scroll',()=>{if(tick)return;tick=true;requestAnimationFrame(()=>{tick=false;upd()})},{passive:true});addEventListener('resize',upd);upd();
+addEventListener('scroll',upd,{passive:true});addEventListener('resize',upd);upd();
 // шарики по клику на фото (серебряный — фото, остальные — тёплые цвета)
-const hasBl=new Promise(r=>{const i=new Image();i.onload=()=>r(1);i.onerror=()=>r(0);i.src='img/balloon-2.webp'});
+const hasBl=new Promise(r=>{const i=new Image();i.onload=()=>r(1);i.onerror=()=>r(0);i.src='img/balloon-2.png'});
 circle.addEventListener('click',async e=>{
  const ph=await hasBl,col=['#d9b46f','#f1e6d4','#a8844a','#c9c2b8','#8a6a3c'];
  for(let i=0;i<10;i++){const b=document.createElement('div');b.className='balloon';
   b.style.left=(e.clientX+(Math.random()-.5)*Math.min(innerWidth*.7,420))+'px';
-  if(ph&&i%2){b.classList.add('ph');b.style.backgroundImage='url(img/balloon-2.webp)'}else b.style.background=col[i%5];
+  if(ph&&i%2){b.classList.add('ph');b.style.backgroundImage='url(img/balloon-2.png)'}else b.style.background=col[i%5];
   b.style.animationDelay=Math.random()*.4+'s';document.body.appendChild(b);setTimeout(()=>b.remove(),3400)}});
 
 // ===== отзывы =====
-let ri=0;const rb=$('rb');
-$('dots').innerHTML=REVIEWS.map((_,i)=>`<i data-i="${i}" aria-label="Отзыв ${i+1}"></i>`).join('');
+let ri=0;const rb=$('rb');$('dots').innerHTML=REVIEWS.map((_,i)=>`<i data-i="${i}" aria-label="Отзыв ${i+1}"></i>`).join('');
 function show(i,first){ri=(i+REVIEWS.length)%REVIEWS.length;
  const draw=()=>{const r=REVIEWS[ri];
   rb.innerHTML=`<div class="stars">★★★★★</div><p class="t">«${r[0]}»</p><p class="n"><b>${r[1]}</b><span>·</span>${r[2]}</p>`;
   rb.classList.remove('out');[...$('dots').children].forEach((d,k)=>d.classList.toggle('on',k===ri))};
  if(first)draw();else{rb.classList.add('out');setTimeout(draw,350)}}
-$('rp').onclick=()=>show(ri-1);$('rn').onclick=()=>show(ri+1);
-$('dots').onclick=e=>e.target.dataset.i&&show(+e.target.dataset.i);show(0,true);
+$('rp').onclick=()=>show(ri-1);$('rn').onclick=()=>show(ri+1);$('dots').onclick=e=>e.target.dataset.i&&show(+e.target.dataset.i);show(0,true);
 
 // ===== модальные окна =====
 let lastBtn=null;
@@ -506,9 +464,7 @@ addEventListener('keydown',e=>{if(e.key==='Escape'){const m=document.querySelect
 document.querySelector('select[name=type]').insertAdjacentHTML('beforeend',TYPES.map(t=>`<option>${t}</option>`).join(''));
 $('form').addEventListener('submit',async e=>{e.preventDefault();
  const f=Object.fromEntries(new FormData(e.target)),st=$('st'),btn=$('send');
- const c=(f.telegram||'').trim(),digits=c.replace(/\D/g,''),isTg=/^(@|https?:\/\/)?(t\.me\/)?@?[A-Za-z0-9_]{5,32}$/.test(c)&&/[A-Za-z]/.test(c),isPhone=digits.length>=10&&digits.length<=15&&/^[+\d\s().-]+$/.test(c);
- if(!isTg&&!isPhone){st.style.color='#e2a66b';st.textContent='Укажите Telegram (@username) или номер телефона, чтобы я могла с вами связаться.';$('contactField').focus();return}
- const text=`🎉 Новая заявка с сайта\n\nИмя: ${f.name}\nДата: ${f.date||'—'}\nПраздник: ${f.type||'—'}\nTelegram / телефон: ${c}\nКомментарий: ${f.comment||'—'}`;
+ const text=`🎉 Новая заявка с сайта\n\nИмя: ${f.name}\nДата: ${f.date||'—'}\nПраздник: ${f.type||'—'}\nTelegram: ${f.telegram||'—'}\nКомментарий: ${f.comment||'—'}`;
  btn.disabled=true;btn.textContent='Отправляем…';st.textContent='';
  try{const r=await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:TG_CHAT,text})});
   if(!r.ok)throw 0;st.style.color='#9ad0a0';st.textContent='Спасибо! Заявка отправлена — я свяжусь с вами в ближайшее время.';e.target.reset()}
